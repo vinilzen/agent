@@ -1,0 +1,5 @@
+acme_spy:
+    resource: "@AcmeSpyBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
