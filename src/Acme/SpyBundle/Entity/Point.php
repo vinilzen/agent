@@ -49,6 +49,11 @@ class Point
      */
     private $coordinates;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Franchise", inversedBy="points")
+     * @ORM\JoinColumn(name="franchise_id", referencedColumnName="id")
+     */
+    protected $franchise;
 
     /**
      * Get id
@@ -150,5 +155,28 @@ class Point
     public function getCoordinates()
     {
         return $this->coordinates;
+    }
+
+    /**
+     * Set franchise
+     *
+     * @param \Acme\SpyBundle\Entity\Franchise $franchise
+     * @return Point
+     */
+    public function setFranchise(\Acme\SpyBundle\Entity\Franchise $franchise = null)
+    {
+        $this->franchise = $franchise;
+    
+        return $this;
+    }
+
+    /**
+     * Get franchise
+     *
+     * @return \Acme\SpyBundle\Entity\Franchise 
+     */
+    public function getFranchise()
+    {
+        return $this->franchise;
     }
 }

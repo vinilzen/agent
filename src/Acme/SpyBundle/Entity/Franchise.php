@@ -3,6 +3,7 @@
 namespace Acme\SpyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Franchise
@@ -35,6 +36,15 @@ class Franchise
      */
     private $industry;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Point", mappedBy="franchise")
+     */
+    protected $points;
+
+    public function __construct()
+    {
+        $this->points = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -90,5 +100,38 @@ class Franchise
     public function getIndustry()
     {
         return $this->industry;
+    }
+
+    /**
+     * Add points
+     *
+     * @param \Acme\SpyBundle\Entity\Point $points
+     * @return Franchise
+     */
+    public function addPoint(\Acme\SpyBundle\Entity\Point $points)
+    {
+        $this->points[] = $points;
+    
+        return $this;
+    }
+
+    /**
+     * Remove points
+     *
+     * @param \Acme\SpyBundle\Entity\Point $points
+     */
+    public function removePoint(\Acme\SpyBundle\Entity\Point $points)
+    {
+        $this->points->removeElement($points);
+    }
+
+    /**
+     * Get points
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPoints()
+    {
+        return $this->points;
     }
 }
