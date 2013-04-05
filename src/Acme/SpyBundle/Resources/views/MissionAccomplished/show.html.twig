@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>MissionAccomplished</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Coordinates</th>
+                <td>{{ entity.coordinates }}</td>
+            </tr>
+            <tr>
+                <th>Info</th>
+                <td>{{ entity.info }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ entity.status }}</td>
+            </tr>
+            <tr>
+                <th>Form</th>
+                <td>{{ entity.form }}</td>
+            </tr>
+            <tr>
+                <th>Files</th>
+                <td>{{ entity.files }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('complet') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('complet_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('complet_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

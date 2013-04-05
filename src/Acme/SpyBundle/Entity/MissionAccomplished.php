@@ -1,0 +1,184 @@
+<?php
+
+namespace Acme\SpyBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * MissionAccomplished
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class MissionAccomplished
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coordinates", type="string")
+     */
+    private $coordinates;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="info", type="text")
+     */
+    private $info;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string")
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="form", type="string")
+     */
+    private $form;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="files", type="text")
+     */
+    private $files;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set coordinates
+     *
+     * @param string $coordinates
+     * @return MissionAccomplished
+     */
+    public function setCoordinates($coordinates)
+    {
+        $this->coordinates = $coordinates;
+    
+        return $this;
+    }
+
+    /**
+     * Get coordinates
+     *
+     * @return string 
+     */
+    public function getCoordinates()
+    {
+        return $this->coordinates;
+    }
+
+    /**
+     * Set info
+     *
+     * @param string $info
+     * @return MissionAccomplished
+     */
+    public function setInfo($info)
+    {
+        $this->info = $info;
+    
+        return $this;
+    }
+
+    /**
+     * Get info
+     *
+     * @return string 
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return MissionAccomplished
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set form
+     *
+     * @param string $form
+     * @return MissionAccomplished
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+    
+        return $this;
+    }
+
+    /**
+     * Get form
+     *
+     * @return string 
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * Set files
+     *
+     * @param string $files
+     * @return MissionAccomplished
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
+    
+        return $this;
+    }
+
+    /**
+     * Get files
+     *
+     * @return string 
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+}

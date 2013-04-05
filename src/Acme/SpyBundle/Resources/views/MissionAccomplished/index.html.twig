@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>MissionAccomplished list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Coordinates</th>
+                <th>Info</th>
+                <th>Status</th>
+                <th>Form</th>
+                <th>Files</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('complet_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.coordinates }}</td>
+                <td>{{ entity.info }}</td>
+                <td>{{ entity.status }}</td>
+                <td>{{ entity.form }}</td>
+                <td>{{ entity.files }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('complet_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('complet_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('complet_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
