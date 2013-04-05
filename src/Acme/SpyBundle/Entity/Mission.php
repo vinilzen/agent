@@ -38,7 +38,7 @@ class Mission
     /**
      * @var boolean
      *
-     * @ORM\Column(name="need_buy", type="boolean")
+     * @ORM\Column(name="need_buy", type="boolean", nullable=true)
      */
     private $needBuy;
 
