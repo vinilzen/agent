@@ -38,14 +38,14 @@ class Question
     /**
      * @var array
      *
-     * @ORM\Column(name="answers", type="simple_array")
+     * @ORM\Column(name="answers", type="string")
      */
     private $answers;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="type", type="simple_array")
+     * @ORM\Column(name="type", type="string")
      */
     private $type;
 
