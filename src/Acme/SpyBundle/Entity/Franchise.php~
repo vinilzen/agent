@@ -101,4 +101,37 @@ class Franchise
     {
         return $this->industry;
     }
+
+    /**
+     * Add points
+     *
+     * @param \Acme\SpyBundle\Entity\Point $points
+     * @return Franchise
+     */
+    public function addPoint(\Acme\SpyBundle\Entity\Point $points)
+    {
+        $this->points[] = $points;
+    
+        return $this;
+    }
+
+    /**
+     * Remove points
+     *
+     * @param \Acme\SpyBundle\Entity\Point $points
+     */
+    public function removePoint(\Acme\SpyBundle\Entity\Point $points)
+    {
+        $this->points->removeElement($points);
+    }
+
+    /**
+     * Get points
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPoints()
+    {
+        return $this->points;
+    }
 }

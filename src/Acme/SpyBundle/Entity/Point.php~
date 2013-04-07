@@ -156,4 +156,27 @@ class Point
     {
         return $this->coordinates;
     }
+
+    /**
+     * Set franchise
+     *
+     * @param \Acme\SpyBundle\Entity\Franchise $franchise
+     * @return Point
+     */
+    public function setFranchise(\Acme\SpyBundle\Entity\Franchise $franchise = null)
+    {
+        $this->franchise = $franchise;
+    
+        return $this;
+    }
+
+    /**
+     * Get franchise
+     *
+     * @return \Acme\SpyBundle\Entity\Franchise 
+     */
+    public function getFranchise()
+    {
+        return $this->franchise;
+    }
 }
