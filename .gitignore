@@ -1,8 +1,5 @@
 # Bootstrap
 app/bootstrap*
-composer*
-bin/doctrine
-bin/doctrine.php
 
 # Symfony directories
 vendor/*
