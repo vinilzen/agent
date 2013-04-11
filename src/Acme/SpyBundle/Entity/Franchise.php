@@ -134,4 +134,9 @@ class Franchise
     {
         return $this->points;
     }
+
+    function __toString()
+    {
+        return $this->getBrand();
+    }
 }

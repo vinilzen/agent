@@ -17,4 +17,27 @@
         </service>
     </services>
     -->
+    <services>
+        <service id="sonata.admin.entity_manager" factory-service="doctrine" factory-method="getEntityManager" class="Doctrine\ORM\EntityManager" public="false">
+            <argument>%sonata_doctrine_orm_admin.entity_manager%</argument>
+        </service>
+
+        <service id="sonata.admin.manager.orm" class="Sonata\DoctrineORMAdminBundle\Model\ModelManager">
+            <argument type="service" id="doctrine" />
+        </service>
+        
+        <service id="acme.spy.admin.point" class="Acme\SpyBundle\Admin\PointAdmin">
+            <tag name="sonata.admin" manager_type="orm" show_in_dashboard="true" group="Точки(Заведения)" label="Точки(Заведения)"/>
+            <argument/>
+            <argument>Acme\SpyBundle\Entity\Point</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+
+        <service id="acme.spy.admin.franchise" class="Acme\SpyBundle\Admin\FranchiseAdmin">
+            <tag name="sonata.admin" manager_type="orm" show_in_dashboard="true" group="Сеть торговых точек HoReCa" label="Сеть торговых точек HoReCa"/>
+            <argument/>
+            <argument>Acme\SpyBundle\Entity\Franchise</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+    </services>
 </container>

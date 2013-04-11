@@ -31,21 +31,21 @@ class Point
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="logo", type="text")
+     * @ORM\Column(name="logo", type="text", nullable=true)
      */
     private $logo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="coordinates", type="string", length=100)
+     * @ORM\Column(name="coordinates", type="string", length=100, nullable=true)
      */
     private $coordinates;
 
