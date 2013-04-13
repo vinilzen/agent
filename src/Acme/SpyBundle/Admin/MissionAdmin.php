@@ -23,6 +23,8 @@ class MissionAdmin extends Admin
         $showMapper
                 ->add('id', null, array('label' => 'Идентификатор'))
                 ->add('runtime', null, array('label' => 'Время выполнения'))
+                ->add('needBuy', null, array('label' => 'Необходимость покупки'))
+                ->add('costs', null, array('label' => 'Стоимость задания в баллах'))
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
@@ -36,10 +38,14 @@ class MissionAdmin extends Admin
     {
         $formMapper
                 ->add('runtime', null, array('label' => 'Время выполнения'))
+                ->add('needBuy', null, array('label' => 'Необходимость покупки'))
+                ->add('costs', null, array('label' => 'Стоимость задания в баллах'))
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'))
                 ->setHelps(array(
                                 'runtime' => 'Время выполнения',
+                                'needBuy' => 'Необходимость покупки',
+                                'costs' => 'Стоимость задания в баллах',
                                 'icons' => 'Блок иконок с необходимыми условиями выполнения',
                                 'description' => 'Текст с коротким описанием задания'
                            ));
@@ -57,6 +63,8 @@ class MissionAdmin extends Admin
         $listMapper
                 ->addIdentifier('id')
                 ->addIdentifier('runtime', null, array('label' => 'Время выполнения'))
+                ->addIdentifier('needBuy', null, array('label' => 'Необходимость покупки'))
+                ->addIdentifier('costs', null, array('label' => 'Стоимость задания в баллах'))
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }

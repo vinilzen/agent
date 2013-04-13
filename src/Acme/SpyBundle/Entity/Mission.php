@@ -24,7 +24,7 @@ class Mission
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="integer")
+     * @ORM\Column(name="type", type="integer", nullable=true)
      */
     private $type;
 
@@ -59,7 +59,7 @@ class Mission
     /**
      * @var string
      *
-     * @ORM\Column(name="form", type="text")
+     * @ORM\Column(name="form", type="text", nullable=true)
      */
     private $form;
 
