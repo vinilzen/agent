@@ -137,6 +137,6 @@ class Franchise
 
     function __toString()
     {
-        return $this->getBrand();
+        return (string)$this->getBrand();
     }
 }

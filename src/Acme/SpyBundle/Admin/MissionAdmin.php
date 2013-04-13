@@ -24,9 +24,7 @@ class MissionAdmin extends Admin
                 ->add('id', null, array('label' => 'Идентификатор'))
                 ->add('runtime', null, array('label' => 'Время выполнения'))
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
-                ->add('description', null, array('label' => 'Подсказка по часам работы точки'))
-                ->add('coordinates', null, array('label' => 'Координаты места'))
-                ->add('franchise', null, array('label' => 'Сеть торговых точек'));
+                ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 
     /**
@@ -37,17 +35,13 @@ class MissionAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-                ->add('title', null, array('label' => 'Название'))
-                ->add('logo', null, array('label' => 'Логотип'))
-                ->add('description', null, array('label' => 'Подсказка по часам работы точки'))
-                ->add('coordinates', null, array('label' => 'Координаты места'))              
-                ->add('franchise', null, array('label' => 'Сеть торговых точек'))
+                ->add('runtime', null, array('label' => 'Время выполнения'))
+                ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
+                ->add('description', null, array('label' => 'Текст с коротким описанием задания'))
                 ->setHelps(array(
-                                'title' => 'Название торговой точки',
-                                'logo' => 'Путь к картинке логотипу',
-                                'description' => 'Подсказка по часам работы точки',
-                                'coordinates' => 'Координаты места "43.1341313х56.2452t45ty24"',
-                                'franchise' => 'К какой сети относится' 
+                                'runtime' => 'Время выполнения',
+                                'icons' => 'Блок иконок с необходимыми условиями выполнения',
+                                'description' => 'Текст с коротким описанием задания'
                            ));
 
     }
@@ -62,11 +56,9 @@ class MissionAdmin extends Admin
     {
         $listMapper
                 ->addIdentifier('id')
-                ->addIdentifier('title', null, array('label' => 'Название'))
-                ->add('logo', null, array('label' => 'Путь к картинке логотипу'))
-                ->add('description', null, array('label' => 'Подсказка по часам работы точки'))
-                ->add('coordinates', null, array('label' => 'Координаты места'))
-                ->add('franchise', null, array('label' => 'Сеть торговых точек'));
+                ->addIdentifier('runtime', null, array('label' => 'Время выполнения'))
+                ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
+                ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 
     /**
@@ -78,7 +70,7 @@ class MissionAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-                ->add('title', null, array('label' => 'Название'));
+                ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 
     /**
@@ -93,7 +85,7 @@ class MissionAdmin extends Admin
     {
         if ($action == 'edit' || $action == 'show')
         $menu->addChild(
-            $action == 'edit' ? 'Просмотр точки' : 'Редактирование точки',
+            $action == 'edit' ? 'Просмотр задания' : 'Редактирование задания',
             array('uri' => $this->generateUrl(
                 $action == 'edit' ? 'show' : 'edit', array('id' => $this->getRequest()->get('id'))))
         );
