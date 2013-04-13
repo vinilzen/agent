@@ -70,6 +70,11 @@ class Mission
      */
     private $description;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="MissionType")
+     * @ORM\JoinColumn(name="missionType_id", referencedColumnName="id")
+     */
+    protected $missionType;
 
     /**
      * Get id
@@ -240,5 +245,28 @@ class Mission
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set missionType
+     *
+     * @param \Acme\SpyBundle\Entity\MissionType $missionType
+     * @return Mission
+     */
+    public function setMissionType(\Acme\SpyBundle\Entity\MissionType $missionType = null)
+    {
+        $this->missionType = $missionType;
+    
+        return $this;
+    }
+
+    /**
+     * Get missionType
+     *
+     * @return \Acme\SpyBundle\Entity\MissionType 
+     */
+    public function getMissionType()
+    {
+        return $this->missionType;
     }
 }

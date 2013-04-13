@@ -46,5 +46,12 @@
             <argument>Acme\SpyBundle\Entity\Mission</argument>
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
+
+        <service id="acme.spy.admin.missionType" class="Acme\SpyBundle\Admin\MissionTypeAdmin">
+            <tag name="sonata.admin" manager_type="orm" show_in_dashboard="true" group="Тип Задания" label="Тип Задания"/>
+            <argument/>
+            <argument>Acme\SpyBundle\Entity\MissionType</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
     </services>
 </container>

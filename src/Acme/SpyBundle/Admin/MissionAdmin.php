@@ -26,6 +26,7 @@ class MissionAdmin extends Admin
                 ->add('needBuy', null, array('label' => 'Необходимость покупки'))
                 ->add('costs', null, array('label' => 'Стоимость задания в баллах'))
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
+                ->add('missionType', null, array('label' => 'Тип задания'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 
@@ -42,12 +43,14 @@ class MissionAdmin extends Admin
                 ->add('costs', null, array('label' => 'Стоимость задания в баллах'))
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'))
+                ->add('missionType', null, array('label' => 'Тип задания'))
                 ->setHelps(array(
                                 'runtime' => 'Время выполнения',
                                 'needBuy' => 'Необходимость покупки',
                                 'costs' => 'Стоимость задания в баллах',
                                 'icons' => 'Блок иконок с необходимыми условиями выполнения',
-                                'description' => 'Текст с коротким описанием задания'
+                                'description' => 'Текст с коротким описанием задания',
+                                'missionType' => 'Тип задания'
                            ));
 
     }
@@ -66,6 +69,7 @@ class MissionAdmin extends Admin
                 ->addIdentifier('needBuy', null, array('label' => 'Необходимость покупки'))
                 ->addIdentifier('costs', null, array('label' => 'Стоимость задания в баллах'))
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
+                ->add('missionType', null, array('label' => 'Тип задания'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 
