@@ -3,6 +3,7 @@
 namespace Acme\SpyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Point
@@ -54,6 +55,19 @@ class Point
      * @ORM\JoinColumn(name="franchise_id", referencedColumnName="id")
      */
     protected $franchise;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Mission", mappedBy="point", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OrderBy({"description" = "ASC"})
+     */
+    protected $missions;
+
+
+
+    function __construct()
+    {
+       $this->missions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -178,5 +192,43 @@ class Point
     public function getFranchise()
     {
         return $this->franchise;
+    }
+    
+    function __toString()
+    {
+        return (string)$this->getTitle();
+    }
+
+    /**
+     * Add missions
+     *
+     * @param \Acme\SpyBundle\Entity\Mission $missions
+     * @return Point
+     */
+    public function addMission(\Acme\SpyBundle\Entity\Mission $missions)
+    {
+        $this->missions[] = $missions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove missions
+     *
+     * @param \Acme\SpyBundle\Entity\Mission $missions
+     */
+    public function removeMission(\Acme\SpyBundle\Entity\Mission $missions)
+    {
+        $this->missions->removeElement($missions);
+    }
+
+    /**
+     * Get missions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMissions()
+    {
+        return $this->missions;
     }
 }

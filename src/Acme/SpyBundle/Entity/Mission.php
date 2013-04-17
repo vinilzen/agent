@@ -3,6 +3,7 @@
 namespace Acme\SpyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Mission
@@ -75,6 +76,25 @@ class Mission
      * @ORM\JoinColumn(name="missionType_id", referencedColumnName="id")
      */
     protected $missionType;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Point", inversedBy="missions")
+     * @ORM\JoinColumn(name="point_id", referencedColumnName="id")
+     */
+    protected $point;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="mission", cascade={"all"}, orphanRemoval=true)
+     */
+    protected $questions;
+
+
+
+    function __construct()
+    {
+       $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 
     /**
      * Get id
@@ -268,5 +288,87 @@ class Mission
     public function getMissionType()
     {
         return $this->missionType;
+    }
+
+    /**
+     * Set point
+     *
+     * @param \Acme\SpyBundle\Entity\Point $point
+     * @return Mission
+     */
+    public function setPoint(\Acme\SpyBundle\Entity\Point $point = null)
+    {
+        $this->point = $point;
+    
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return \Acme\SpyBundle\Entity\Point 
+     */
+    public function getPoint()
+    {
+        return $this->point;
+    }
+    
+    function __toString()
+    {
+        return (string)$this->getDescription();
+    }
+
+    /**
+     * Add questions
+     *
+     * @param \Acme\SpyBundle\Entity\Question $questions
+     * @return Mission
+     */
+    public function addQuestion(\Acme\SpyBundle\Entity\Question $questions)
+    {
+        $this->questions[] = $questions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove questions
+     *
+     * @param \Acme\SpyBundle\Entity\Question $questions
+     */
+    public function removeQuestion(\Acme\SpyBundle\Entity\Question $questions)
+    {
+        $this->questions->removeElement($questions);
+    }
+
+    /**
+     * Get questions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * Set questions
+     *
+     * @param \Acme\SpyBundle\Entity\Question $questions
+     * @return Mission
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+
+        foreach ($this->questions as $pos => $question)
+        {
+            /*var_dump($question);
+            var_dump($pos);
+            var_dump($this);*/
+            $question->setMission($this);
+        }
+        //die('xxx');
+        return $this;
     }
 }

@@ -47,10 +47,24 @@
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
 
+        <!--
         <service id="acme.spy.admin.missionType" class="Acme\SpyBundle\Admin\MissionTypeAdmin">
             <tag name="sonata.admin" manager_type="orm" show_in_dashboard="true" group="Тип Задания" label="Тип Задания"/>
             <argument/>
             <argument>Acme\SpyBundle\Entity\MissionType</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+        <service id="acme.spy.admin.questionType" class="Acme\SpyBundle\Admin\QuestionTypeAdmin">
+            <tag name="sonata.admin" manager_type="orm" show_in_dashboard="true" group="Тип вопроса" label="Тип вопроса"/>
+            <argument/>
+            <argument>Acme\SpyBundle\Entity\QuestionType</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>-->
+
+        <service id="acme.spy.admin.question" class="Acme\SpyBundle\Admin\QuestionAdmin">
+            <tag name="sonata.admin" manager_type="orm" show_in_dashboard="false" group="Вопрос" label="Вопрос"/>
+            <argument/>
+            <argument>Acme\SpyBundle\Entity\Question</argument>
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
     </services>

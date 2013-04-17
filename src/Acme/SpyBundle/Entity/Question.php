@@ -31,24 +31,32 @@ class Question
     /**
      * @var integer
      *
-     * @ORM\Column(name="limit", type="integer")
+     * @ORM\Column(name="limitAnswer", type="integer", nullable=true)
      */
-    private $limit;
+    private $limitAnswer = 1;
 
     /**
      * @var array
      *
      * @ORM\Column(name="answers", type="string")
      */
-    private $answers;
+    private $answers = '';
 
     /**
-     * @var array
+     * @var $mission
      *
-     * @ORM\Column(name="type", type="string")
+     * @ORM\ManyToOne(targetEntity="Mission", inversedBy="questions")
+     * @ORM\JoinColumn(name="mission_id", referencedColumnName="id")
+     *
      */
-    private $type;
+    private $mission;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="QuestionType")
+     * @ORM\JoinColumn(name="questionType_id", referencedColumnName="id")
+     */
+    protected $questionType;
 
     /**
      * Get id
@@ -130,25 +138,71 @@ class Question
     }
 
     /**
-     * Set type
+     * Set mission
      *
-     * @param array $type
+     * @param \Acme\SpyBundle\Entity\Mission $mission
      * @return Question
      */
-    public function setType($type)
+    public function setMission(\Acme\SpyBundle\Entity\Mission $mission)
     {
-        $this->type = $type;
+        $this->mission = $mission;
     
         return $this;
     }
 
     /**
-     * Get type
+     * Get mission
      *
-     * @return array 
+     * @return \Acme\SpyBundle\Entity\Mission 
      */
-    public function getType()
+    public function getMission()
     {
-        return $this->type;
+        return $this->mission;
+    }
+
+    /**
+     * Set questionType
+     *
+     * @param \Acme\SpyBundle\Entity\QuestionType $questionType
+     * @return Question
+     */
+    public function setQuestionType(\Acme\SpyBundle\Entity\QuestionType $questionType = null)
+    {
+        $this->questionType = $questionType;
+    
+        return $this;
+    }
+
+    /**
+     * Get questionType
+     *
+     * @return \Acme\SpyBundle\Entity\QuestionType 
+     */
+    public function getQuestionType()
+    {
+        return $this->questionType;
+    }
+
+    /**
+     * Set limitAnswer
+     *
+     * @param integer $limitAnswer
+     * @return Question
+     */
+    public function setLimitAnswer($limitAnswer)
+    {
+        $this->limitAnswer = $limitAnswer;
+    
+        return $this;
+    }
+
+    /**
+     * Get limitAnswer
+     *
+     * @return integer 
+     */
+    public function getLimitAnswer()
+    {
+        return $this->limitAnswer;
     }
 }

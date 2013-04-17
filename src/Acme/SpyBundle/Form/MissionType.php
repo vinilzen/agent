@@ -11,13 +11,19 @@ class MissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type')
             ->add('runtime')
             ->add('needBuy')
             ->add('costs')
             ->add('icons')
             ->add('form')
             ->add('description')
+            ->add('questions', 'collection', array(
+                                                      'label' => 'Вопросы',
+                                                      'type' => new QuestionType(),
+                                                      'allow_add' => true,
+                                                      'allow_delete' => true,
+                                                      'prototype' => true
+                                                 ))
         ;
     }
 
