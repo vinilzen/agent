@@ -8,3 +8,5 @@ Use Symfony 2.2.1, installed with vendors
 Установить их после обновления composer.json можно командой "php composer.phar update"
 
 Настройки доступа к базе тут app/config/parameters.yml
+
+Справка по командам для FOSUserBundle https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/command_line_tools.md
