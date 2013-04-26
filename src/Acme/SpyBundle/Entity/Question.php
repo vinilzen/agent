@@ -49,7 +49,7 @@ class Question
      * @ORM\JoinColumn(name="mission_id", referencedColumnName="id")
      *
      */
-    private $mission;
+    protected $mission;
 
 
     /**

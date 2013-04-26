@@ -13,6 +13,24 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 class QuestionAdmin extends Admin
 {
     /**
+     * Конфигурация отображения записи
+     *
+     * @param \Sonata\AdminBundle\Show\ShowMapper $showMapper
+     * @return void
+     */
+    protected function configureShowField(ShowMapper $showMapper)
+    {
+        $showMapper
+                ->add('id', null, array('label' => 'Идентификатор'))
+                ->add('question', null, array('label' => 'Вопрос'))
+                ->add('limitAnswer', null, array('label' => 'Количество разрещенных ответов'))
+                ->add('answers', null, array('label' => 'Доступные ответы (опционально)'))
+                ->add('mission', null, array('label' => 'Задание'))
+                ->add('questionType', null, array('label' => 'Тип вопроса'));
+    }
+
+
+    /**
      * Конфигурация формы редактирования записи
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
      * @return void
@@ -21,8 +39,28 @@ class QuestionAdmin extends Admin
     {
         $formMapper
                 ->add('question', null, array('label' => 'Вопрос'))
+                ->add('limitAnswer', null, array('label' => 'Количество разрещенных ответов'))
+                ->add('answers', null, array('label' => 'Доступные ответы (опционально)'))
+                ->add('mission', null, array('label' => 'Задание'))
                 ->add('questionType', null, array('label' => 'Тип вопроса'));
 
+    }
+
+    /**
+     * Конфигурация списка записей
+     *
+     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     * @return void
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+                ->addIdentifier('id')
+                ->addIdentifier('question', null, array('label' => 'Время выполнения'))
+                ->addIdentifier('mission', null, array('label' => 'Задание'))
+                ->add('questionType', null, array('label' => 'Тип вопроса'))
+                ->add('limitAnswer', null, array('label' => 'Количество разрещенных ответов'))
+                ->add('answers', null, array('label' => 'Доступные ответы (опционально)'));
     }
 
 }

@@ -62,7 +62,7 @@
         </service>-->
 
         <service id="acme.spy.admin.question" class="Acme\SpyBundle\Admin\QuestionAdmin">
-            <tag name="sonata.admin" manager_type="orm" show_in_dashboard="false" group="Вопрос" label="Вопрос"/>
+            <tag name="sonata.admin" manager_type="orm" show_in_dashboard="true" group="Вопрос" label="Вопрос"/>
             <argument/>
             <argument>Acme\SpyBundle\Entity\Question</argument>
             <argument>SonataAdminBundle:CRUD</argument>

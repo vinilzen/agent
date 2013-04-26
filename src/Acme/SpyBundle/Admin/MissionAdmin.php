@@ -28,7 +28,7 @@ class MissionAdmin extends Admin
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
                 ->add('missionType', null, array('label' => 'Тип задания'))
                 ->add('point', null, array('label' => 'Точка для задания'))
-                ->add('questions', null, array('label' => 'Вопросы'))
+                //->add('questions', null, array('label' => 'Вопросы'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 
@@ -48,15 +48,15 @@ class MissionAdmin extends Admin
                 ->add('missionType', null, array('label' => 'Тип задания'))
         //by_reference используется для того чтобы при трансформации данных запроса в объект сущности
         //которую выполняет Symfony Form Framework, использовался setter сущности News::setNewsLinks  (Mission:setQuestions)
-                ->add('questions', 'sonata_type_collection',
-                      array('label' => 'Вопросы', 'by_reference' => true),
+                /*->add('questions', 'sonata_type_collection',
+                      array('label' => 'Вопросы', 'by_reference' => false),
                       array(
                            'edit' => 'inline',
                           //В сущности Question есть поле question, отражающее положение ссылки в списке
                           //указание опции sortable позволяет менять положение ссылок в списке перетаскиваением
                            'sortable' => 'question',
                            'inline' => 'table',
-                      ))
+                      ))*/
                 ->add('point', null, array('label' => 'Точка для задания'))
                 ->setHelps(array(
                                 'runtime' => 'Время выполнения',
