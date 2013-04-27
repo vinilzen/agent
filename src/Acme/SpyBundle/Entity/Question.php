@@ -23,7 +23,7 @@ class Question
 
     /**
      * @var string
-     *
+     * текст вопроса
      * @ORM\Column(name="question", type="text")
      */
     private $question;
@@ -38,7 +38,7 @@ class Question
     /**
      * @var array
      *
-     * @ORM\Column(name="answers", type="string")
+     * @ORM\Column(name="answers", type="string", nullable=true)
      */
     private $answers = '';
 
@@ -89,29 +89,6 @@ class Question
     public function getQuestion()
     {
         return $this->question;
-    }
-
-    /**
-     * Set limit
-     *
-     * @param integer $limit
-     * @return Question
-     */
-    public function setLimit($limit)
-    {
-        $this->limit = $limit;
-    
-        return $this;
-    }
-
-    /**
-     * Get limit
-     *
-     * @return integer 
-     */
-    public function getLimit()
-    {
-        return $this->limit;
     }
 
     /**

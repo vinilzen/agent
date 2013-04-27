@@ -3,12 +3,15 @@
 namespace Acme\SpyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Acme\SpyBundle\Entity\Mission;
 use Acme\SpyBundle\Form\MissionType;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 
 /**
  * Mission controller.
@@ -30,9 +33,19 @@ class MissionController extends Controller
 
         $entities = $em->getRepository('AcmeSpyBundle:Mission')->findAll();
 
-        return array(
-            'entities' => $entities,
-        );
+        //return array('entities' => $entities);
+
+        //var_dump($entities); die();
+
+        // return json with clear cache        
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");// дата в прошлом
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // всегда модифицируется
+        header("Cache-Control: no-store, no-cache, must-revalidate");// HTTP/1.1
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");// HTTP/1.0
+        
+        $result = array('data' => $entities, 'code' => 200);
+        return $this->render('AcmeSpyBundle::API.json.twig', array('result' => $result));
     }
 
     /**
