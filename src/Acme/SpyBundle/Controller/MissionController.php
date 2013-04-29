@@ -140,12 +140,7 @@ $arr_replace_cyr = array('А', 'а', 'Б', 'б', 'В', 'в', 'Г', 'г', 'Д', '
         $entity = new Mission();
         $form   = $this->createForm(new MissionType(), $entity);
 
-        $points = $this->getDoctrine()->getManager()->getRepository('AcmeSpyBundle:Point')->findAll();
-
-        //foreach ($points as $point) {            var_dump($point->getTitle());        }
-
         return array(
-            'points' => $points,
             'entity' => $entity,
             'form'   => $form->createView(),
         );
