@@ -7,7 +7,6 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Type</th>
                 <th>Runtime</th>
                 <th>Needbuy</th>
                 <th>Costs</th>
@@ -21,8 +20,7 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('mission_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.type }}</td>
-                <td>{{ entity.runtime|date('H:i') }}</td>
+                <td>{{ entity.runtime }}</td>
                 <td>{{ entity.needBuy }}</td>
                 <td>{{ entity.costs }}</td>
                 <td>{{ entity.icons }}</td>

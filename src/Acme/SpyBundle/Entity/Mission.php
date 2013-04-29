@@ -23,13 +23,6 @@ class Mission
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="type", type="integer", nullable=true)
-     */
-    private $type;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="runtime", type="time")
