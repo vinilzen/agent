@@ -17,13 +17,16 @@ class MissionType extends AbstractType
             ->add('icons')
             ->add('form')
             ->add('description')
-            ->add('questions', 'collection', array(
-                                                      'label' => 'Вопросы',
-                                                      'type' => new QuestionType(),
-                                                      'allow_add' => true,
-                                                      'allow_delete' => true,
-                                                      'prototype' => true
-                                                 ))
+            ->add('point', 'entity', array(
+                                              'label' => 'Точки',
+                                              'class' => 'AcmeSpyBundle:Point',
+                                              'expanded' => false
+                                           ))
+            ->add('missionType', 'entity', array(
+                                                  'label' => 'Вопросы',
+                                                  'class' => 'AcmeSpyBundle:missionType',
+                                                  'expanded' => false
+                                               ))
         ;
     }
 
