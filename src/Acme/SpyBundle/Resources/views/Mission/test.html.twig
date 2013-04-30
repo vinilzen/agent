@@ -1,0 +1,58 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>test</h1><hr>
+
+    <p>id|description|runtime|needBuy|costs|icons|missionType(id)|point(id)</p>
+    <ul id="missions"></li>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/backbone-min.js"></script>
+<script type="text/javascript">
+
+    var Mission = Backbone.Model.extend({
+        initialize:function(){
+            this.view = new MissionView({model:this});
+        }
+    });
+
+    var Missions = Backbone.Collection.extend({
+        model:Mission,
+        url:'/app_dev.php/mission/',
+        initialize:function(){
+            this.on('reset', function(collection,b){
+                $('#missions').html();
+                if (collection.length > 0){
+                    collection.each(function(model) {
+                      $('#missions').append(model.view.el);
+                    });
+                }
+            });
+        }
+    });
+
+    var MissionView = Backbone.View.extend({
+        tagName:'li',
+        initialize:function(){
+            this.render();
+        },
+        render:function(){
+            this.$el.html(  this.model.id+'|'+
+                            this.model.get('description')+'|'+
+                            this.model.get('runtime')+'|'+
+                            this.model.get('needBuy')+'|'+
+                            this.model.get('costs')+'|'+
+                            this.model.get('icons')+'|'+
+                            this.model.get('missionType')+'|'+
+                            this.model.get('point'));
+        }
+    });
+
+
+$(function() {
+    var missions = new Missions();
+    missions.fetch();
+});
+
+</script>
+{% endblock %}
