@@ -39,9 +39,7 @@ class FranchiseController extends Controller
             );
         }
 
-
-
-        $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), json_encode($entities_array));
+        $json_string = MissionController::utf_cyr(json_encode($entities_array));
 
         $response = new Response();
         $response->setContent($json_string);
@@ -150,7 +148,7 @@ class FranchiseController extends Controller
             $json_string = json_encode($entity_array);
         }
         
-        $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), $json_string);
+        $json_string = MissionController::utf_cyr($json_string);
 
         $response->setContent($json_string);
         return $response;
@@ -170,8 +168,7 @@ class FranchiseController extends Controller
         $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
 
         if (!$entity) {
-            $json_string = json_encode('Сеть не найдена');
-             $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), $json_string);
+            $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
             
             $response = new Response();
             $response->setStatusCode(404);
@@ -224,7 +221,7 @@ class FranchiseController extends Controller
         ));
 
         if (!$entity) {
-            $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), json_encode('Сеть не найдена'));
+            $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
             
             $response->setStatusCode(404);
             $response->setContent($json_string);
@@ -276,8 +273,7 @@ class FranchiseController extends Controller
             $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
 
             if (!$entity) {
-                $json_string = json_encode('Задание не найдено');
-                 $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), $json_string);
+                $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
                 
                 $response->setStatusCode(404);
                 $response->setContent($json_string);
