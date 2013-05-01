@@ -3,12 +3,14 @@
 namespace Acme\SpyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Acme\SpyBundle\Entity\Franchise;
 use Acme\SpyBundle\Form\FranchiseType;
+use Acme\SpyBundle\Controller\MissionController;
 
 /**
  * Franchise controller.
@@ -27,12 +29,33 @@ class FranchiseController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('AcmeSpyBundle:Franchise')->findAll();
 
-        return array(
-            'entities' => $entities,
-        );
+        foreach ($entities as $entity) {
+            $entities_array[] = array(
+                'id' => $entity->getId(),
+                'brand' => $entity->getBrand(),
+                'industry' => $entity->getIndustry()
+            );
+        }
+
+
+
+        $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), json_encode($entities_array));
+
+        $response = new Response();
+        $response->setContent($json_string);
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
+        return $response;
     }
 
     /**
@@ -53,13 +76,24 @@ class FranchiseController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('franchise_show', array('id' => $entity->getId())));
+            $json_string = json_encode($entity->getId());
+        } else {
+            $json_string = json_encode('Неверный запрос');
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+
+        $response = new Response();
+        $response->setContent($json_string);
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        return $response;
     }
 
     /**
@@ -90,19 +124,36 @@ class FranchiseController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
 
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Franchise entity.');
+            $json_string = json_encode('Сеть не найдена');
+            $response->setStatusCode(404);
+        } else {
+            $entity_array = array(
+                'id' => $entity->getId(),
+                'brand' => $entity->getBrand(),
+                'industry' => $entity->getIndustry()
+            );
+
+            $json_string = json_encode($entity_array);
         }
+        
+        $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), $json_string);
 
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
+        $response->setContent($json_string);
+        return $response;
     }
 
     /**
@@ -119,7 +170,23 @@ class FranchiseController extends Controller
         $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Franchise entity.');
+            $json_string = json_encode('Сеть не найдена');
+             $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), $json_string);
+            
+            $response = new Response();
+            $response->setStatusCode(404);
+            $response->setContent($json_string);
+            $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+            $response->setCache(array(
+                'etag'          => 'abcdef',
+                'last_modified' => new \DateTime(),
+                'max_age'       => 0,
+                's_maxage'      => 0,
+                'private'       => false,
+                'public'        => true,
+            ));
+            
+            return $response;
         }
 
         $editForm = $this->createForm(new FranchiseType(), $entity);
@@ -142,11 +209,26 @@ class FranchiseController extends Controller
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
 
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Franchise entity.');
+            $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), json_encode('Сеть не найдена'));
+            
+            $response->setStatusCode(404);
+            $response->setContent($json_string);
+            return $response;
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -157,14 +239,14 @@ class FranchiseController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('franchise_edit', array('id' => $id)));
+            $json_string = json_encode($entity->getId());
+        } else {
+            $json_string = json_encode('Неверный запрос');
+            $response->setStatusCode(400);
         }
 
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+        $response->setContent($json_string);
+        return $response;
     }
 
     /**
@@ -178,19 +260,41 @@ class FranchiseController extends Controller
         $form = $this->createDeleteForm($id);
         $form->bind($request);
 
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Franchise entity.');
+                $json_string = json_encode('Задание не найдено');
+                 $json_string = str_replace(MissionController::arr_replace_utf(), MissionController::arr_replace_cyr(), $json_string);
+                
+                $response->setStatusCode(404);
+                $response->setContent($json_string);
+                
+                return $response;
             }
 
             $em->remove($entity);
             $em->flush();
+            $json_string = $id;
+        } else {
+            $json_string = json_encode('Неверный запрос');
         }
 
-        return $this->redirect($this->generateUrl('franchise'));
+        $response->setContent($json_string);
+
+        return $response;
     }
 
     /**

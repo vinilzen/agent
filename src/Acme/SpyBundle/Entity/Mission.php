@@ -53,13 +53,6 @@ class Mission
     /**
      * @var string
      *
-     * @ORM\Column(name="form", type="text", nullable=true)
-     */
-    private $form;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
@@ -212,29 +205,6 @@ class Mission
     public function getIcons()
     {
         return $this->icons;
-    }
-
-    /**
-     * Set form
-     *
-     * @param string $form
-     * @return Mission
-     */
-    public function setForm($form)
-    {
-        $this->form = $form;
-    
-        return $this;
-    }
-
-    /**
-     * Get form
-     *
-     * @return string 
-     */
-    public function getForm()
-    {
-        return $this->form;
     }
 
     /**
