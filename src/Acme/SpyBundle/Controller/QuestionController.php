@@ -3,11 +3,13 @@
 namespace Acme\SpyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Acme\SpyBundle\Entity\Question;
+use Acme\SpyBundle\Controller\MissionController;
 use Acme\SpyBundle\Form\QuestionType;
 
 /**
@@ -27,13 +29,66 @@ class QuestionController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('AcmeSpyBundle:Question')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
+
+
+    /**
+     * Lists all Question entities by Mission.
+     *
+     * @Route("/mission/{mission_id}", name="questionByMission")
+     * @Method("GET")
+     * @Template()
+     */
+    public function listByMissionAction($mission_id)
+    {
+        $entity = $this->getDoctrine()->getManager()
+                    ->getRepository('AcmeSpyBundle:Mission')->find($mission_id);
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        if (!$entity) {
+
+            $json_string = json_encode('Задание не найдено');
+            $response->setStatusCode(404);
+
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+            $entities = $em->getRepository('AcmeSpyBundle:Question')->findByMission($mission_id);
+
+            foreach ($entities as $entity) {
+                $entities_array[] = array(
+                    'id' => $entity->getId(),
+                    'question' => $entity->getQuestion(),
+                    'limitAnswer' => $entity->getLimitAnswer(),
+                    'answers'=> $entity->getAnswers(),
+                    'questionType' => $entity->getQuestionType()->getId()
+                );
+            }
+
+            $json_string = MissionController::utf_cyr(json_encode($entities_array));
+        }
+
+        $response->setContent($json_string);
+
+        return $response;
+    }
+
+
+
 
     /**
      * Creates a new Question entity.
