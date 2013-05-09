@@ -37,16 +37,16 @@ class Point
     private $description;
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="latitude", type="float")
+     * @ORM\Column(name="latitude", type="decimal")
      */
     private $latitude;
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(name="longitude", type="float")
+     * @ORM\Column(name="longitude", type="decimal")
      */
     private $longitude;
 
@@ -190,7 +190,7 @@ class Point
     /**
      * Set latitude
      *
-     * @param float $latitude
+     * @param decimal $latitude
      * @return Point
      */
     public function setLatitude($latitude)
@@ -203,7 +203,7 @@ class Point
     /**
      * Get latitude
      *
-     * @return float 
+     * @return decimal 
      */
     public function getLatitude()
     {
@@ -213,7 +213,7 @@ class Point
     /**
      * Set longitude
      *
-     * @param float $longitude
+     * @param decimal $longitude
      * @return Point
      */
     public function setLongitude($longitude)
@@ -226,7 +226,7 @@ class Point
     /**
      * Get longitude
      *
-     * @return float 
+     * @return decimal 
      */
     public function getLongitude()
     {

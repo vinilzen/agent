@@ -39,8 +39,8 @@ class PointAdmin extends Admin
         $formMapper
                 ->add('title', null, array('label' => 'Название'))
                 ->add('description', null, array('label' => 'Подсказка по часам работы точки'))
-                ->add('longitude', null, array('label' => 'Координаты места (долгота)'))              
-                ->add('latitude', null, array('label' => 'Координаты места (широта)'))              
+                ->add('longitude', 'text', array('label' => 'Координаты места (долгота)'))              
+                ->add('latitude', 'text', array('label' => 'Координаты места (широта)'))              
                 ->add('franchise', null, array('label' => 'Сеть торговых точек'))
                 ->setHelps(array(
                                 'title' => 'Название торговой точки',
