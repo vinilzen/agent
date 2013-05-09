@@ -91,6 +91,11 @@ class Question
         return $this->question;
     }
 
+    function __toString()
+    {
+        return (string)$this->question;
+    }
+
     /**
      * Set answers
      *

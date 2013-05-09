@@ -28,7 +28,7 @@ class MissionAdmin extends Admin
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
                 ->add('missionType', null, array('label' => 'Тип задания'))
                 ->add('point', null, array('label' => 'Точка для задания'))
-                //->add('questions', null, array('label' => 'Вопросы'))
+                ->add('questions', null, array('label' => 'Вопросы'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 
@@ -86,6 +86,7 @@ class MissionAdmin extends Admin
                 ->add('icons', null, array('label' => 'Блок иконок с необходимыми условиями выполнения'))
                 ->add('missionType', null, array('label' => 'Тип задания'))
                 ->add('point', null, array('label' => 'Точка для задания'))
+                ->add('questions', null, array('label' => 'Вопросы'))
                 ->add('description', null, array('label' => 'Текст с коротким описанием задания'));
     }
 

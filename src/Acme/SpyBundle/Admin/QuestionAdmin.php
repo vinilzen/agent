@@ -62,5 +62,16 @@ class QuestionAdmin extends Admin
                 ->add('limitAnswer', null, array('label' => 'Количество разрещенных ответов'))
                 ->add('answers', null, array('label' => 'Доступные ответы (опционально)'));
     }
-
+    
+    /**
+     * Поля, по которым производится поиск в списке записей
+     *
+     * @param \Sonata\AdminBundle\Datagrid\DatagridMapper $datagridMapper
+     * @return void
+     */
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+                ->add('mission', null, array('label' => 'Задание'));
+    }
 }
