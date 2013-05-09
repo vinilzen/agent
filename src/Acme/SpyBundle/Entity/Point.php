@@ -37,18 +37,18 @@ class Point
     private $description;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="logo", type="text", nullable=true)
+     * @ORM\Column(name="latitude", type="float")
      */
-    private $logo;
+    private $latitude;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="coordinates", type="string", length=100, nullable=true)
+     * @ORM\Column(name="longitude", type="float")
      */
-    private $coordinates;
+    private $longitude;
 
     /**
      * @ORM\ManyToOne(targetEntity="Franchise", inversedBy="points")
@@ -125,51 +125,6 @@ class Point
         return $this->description;
     }
 
-    /**
-     * Set logo
-     *
-     * @param string $logo
-     * @return Point
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
-    
-        return $this;
-    }
-
-    /**
-     * Get logo
-     *
-     * @return string 
-     */
-    public function getLogo()
-    {
-        return $this->logo;
-    }
-
-    /**
-     * Set coordinates
-     *
-     * @param string $coordinates
-     * @return Point
-     */
-    public function setCoordinates($coordinates)
-    {
-        $this->coordinates = $coordinates;
-    
-        return $this;
-    }
-
-    /**
-     * Get coordinates
-     *
-     * @return string 
-     */
-    public function getCoordinates()
-    {
-        return $this->coordinates;
-    }
 
     /**
      * Set franchise
@@ -230,5 +185,51 @@ class Point
     public function getMissions()
     {
         return $this->missions;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param float $latitude
+     * @return Point
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return float 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param float $longitude
+     * @return Point
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return float 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
     }
 }

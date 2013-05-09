@@ -23,9 +23,9 @@ class PointAdmin extends Admin
         $showMapper
                 ->add('id', null, array('label' => 'Идентификатор'))
                 ->add('title', null, array('label' => 'Название'))
-                ->add('logo', null, array('label' => 'Путь к картинке логотипу'))
                 ->add('description', null, array('label' => 'Подсказка по часам работы точки'))
-                ->add('coordinates', null, array('label' => 'Координаты места'))
+                ->add('longitude', null, array('label' => 'Координаты места (долгота)'))
+                ->add('latitude', null, array('label' => 'Координаты места (широта)'))
                 ->add('franchise', null, array('label' => 'Сеть торговых точек'));
     }
 
@@ -38,15 +38,16 @@ class PointAdmin extends Admin
     {
         $formMapper
                 ->add('title', null, array('label' => 'Название'))
-                ->add('logo', null, array('label' => 'Логотип'))
                 ->add('description', null, array('label' => 'Подсказка по часам работы точки'))
-                ->add('coordinates', null, array('label' => 'Координаты места'))              
+                ->add('longitude', null, array('label' => 'Координаты места (долгота)'))              
+                ->add('latitude', null, array('label' => 'Координаты места (широта)'))              
                 ->add('franchise', null, array('label' => 'Сеть торговых точек'))
                 ->setHelps(array(
                                 'title' => 'Название торговой точки',
                                 'logo' => 'Путь к картинке логотипу',
                                 'description' => 'Подсказка по часам работы точки',
-                                'coordinates' => 'Координаты места "43.1341313х56.2452t45ty24"',
+                                'longitude' => 'Координаты места (долгота) "43.1341313"',
+                                'latitude' => 'Координаты места (широта) "56.245245"',
                                 'franchise' => 'К какой сети относится' 
                            ));
 
@@ -63,9 +64,9 @@ class PointAdmin extends Admin
         $listMapper
                 ->addIdentifier('id')
                 ->addIdentifier('title', null, array('label' => 'Название'))
-                ->add('logo', null, array('label' => 'Путь к картинке логотипу'))
                 ->add('description', null, array('label' => 'Подсказка по часам работы точки'))
-                ->add('coordinates', null, array('label' => 'Координаты места'))
+                ->add('longitude', null, array('label' => 'Координаты места (долгота)'))
+                ->add('latitude', null, array('label' => 'Координаты места (широта)'))
                 ->add('franchise', null, array('label' => 'Сеть торговых точек'));
     }
 

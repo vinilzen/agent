@@ -36,7 +36,6 @@ class PointController extends Controller
                 'id'            =>  $entity->getId(),
                 'title'         =>  $entity->getTitle(),
                 'description'   =>  $entity->getDescription(),
-                'logo'          =>  $entity->getLogo(),
                 'coordinates'   =>  $entity->getCoordinates(),
                 'franchise'     =>  $entity->getFranchise()!=NULL?$entity->getFranchise()->getId():0
             );
@@ -135,7 +134,6 @@ class PointController extends Controller
                 'id'            =>  $entity->getId(),
                 'title'         =>  $entity->getTitle(),
                 'description'   =>  $entity->getDescription(),
-                'logo'          =>  $entity->getLogo(),
                 'coordinates'   =>  $entity->getCoordinates(),
                 'franchise'     =>  $entity->getFranchise()!=NULL?$entity->getFranchise()->getId():0
             );
