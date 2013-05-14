@@ -136,7 +136,7 @@ class FranchiseController extends Controller
         ));
 
         if (!$entity) {
-            $json_string = json_encode('Сеть не найдена');
+            $json_string = json_encode("Сеть не найдена");
             $response->setStatusCode(404);
         } else {
             $entity_array = array(
