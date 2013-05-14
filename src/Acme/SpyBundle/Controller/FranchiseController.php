@@ -69,19 +69,7 @@ class FranchiseController extends Controller
         $form = $this->createForm(new FranchiseType(), $entity);
         $form->bind($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            $json_string = json_encode($entity->getId());
-        } else {
-            $json_string = json_encode('Неверный запрос');
-        }
-
-
         $response = new Response();
-        $response->setContent($json_string);
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
         $response->setCache(array(
             'etag'          => 'abcdef',
@@ -91,6 +79,28 @@ class FranchiseController extends Controller
             'private'       => false,
             'public'        => true,
         ));
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            $json_string = json_encode($entity->getId());
+        } else {
+            $errors = $form->getErrors();
+/*
+            var_dump($errors);
+            foreach ($errors as $k => $v) {
+                print_r($k, true);
+                print_r($v, true);
+            } die;*/
+
+            $json_string = json_encode(serialize($errors));
+           // $json_string = json_encode('Неверный запрос');
+            $response->setStatusCode(400);
+        }
+
+        $response->setContent($json_string);
         return $response;
     }
 

@@ -39,7 +39,6 @@
 											<input type="text" class="url" value="/franchise" />
 											<span class="btn btn-block send">Выполнить</span>
 										</div>
-
 										<div class="tab-pane show_one" id="show_one_franchise">
 
 											<form class="form-horizontal">
@@ -90,20 +89,20 @@
   												<div class="control-group">
 													<label class="control-label">Бренд*:</label>
 													<div class="controls">
-														<input type="text" name="brand" required="required" maxlength="100" class="brand" />
+														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="brand" />
 													</div>
 												</div>
 													
 												<div class="control-group">
 													<label class="control-label">Индустрия*:</label>
 													<div class="controls">
-														<input type="text" name="industry" required="required" maxlength="100" class="industry" />
+														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="industry" />
 													</div>
 												</div>
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send">Выполнить</span>
+														<span class="btn send_create_franchise">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -268,8 +267,31 @@
 
 		$.ajax({
 		  type: "GET",
-		  url: '/app_dev.php'+$('.active .url').val(),
-		  //data: { name: "John", location: "Boston" }
+		  url: '/app_dev.php'+$('.active .url').val()
+		}).done(function( a,b,c) {
+		  console.log( "done: ",a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(c.status);
+		  $('#response').html(c.responseText);
+		}).error(function(a,b,c){
+		  console.log( "error: ", a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(a.status);
+		  $('#response').html(a.responseText);
+		});
+
+    })
+
+    $('.send_create_franchise').click(function(){
+		
+		$('.progress').show();
+		$('#status').html('');
+		$('#response').html('');
+
+		$.ajax({
+		  type: "POST",
+		  url: '/app_dev.php'+$('#create_franchise .url').val(),
+		  data: { 'franchise[brand]': $('.brand').val(), 'franchise[industry]': $('.industry').val() }
 		}).done(function( a,b,c) {
 		  console.log( "done: ",a, b,c);
 		  $('.progress').hide();
