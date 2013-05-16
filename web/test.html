@@ -13,7 +13,7 @@
 
     		<h1>JS Test for API</h1>
 	    	<div class="row-fluid">
-	  			<div class="span6 ">
+	  			<div class="span7 ">
 	  				<h2>Тестируем API:</h2>
 					<div class="accordion" id="accordion2">
 						<div class="accordion-group">
@@ -209,26 +209,74 @@
 								<div class="accordion-inner">
 
 									<ul class="nav nav-tabs" id="myTab">
-										<li class="active"><a href="#get_list_franchise">GET LIST</a></li>
-										<li><a href="#show_one_franchise">SHOW ONE</a></li>
-										<li><a href="#create_franchise">CREATE</a></li>
-										<li><a href="#update_franchise">UPDATE</a></li>
-										<li><a href="#delete_franchise">DELETE</a></li>
+										<li class="active"><a href="#get_points">GET LIST</a></li>
+										<li><a href="#get_near_points">GET NEAR POINTS</a></li>
+										<li><a href="#show_one_point">SHOW ONE</a></li>
+										<li><a href="#create_point">CREATE</a></li>
+										<li><a href="#update_point">UPDATE</a></li>
+										<li><a href="#delete_point">DELETE</a></li>
 									</ul>
 									 
 									<div class="tab-content">
-										<div class="tab-pane active get_list" id="get_list_franchise">
+										<div class="tab-pane active get_list" id="get_points">
 											<label>URL</label>
-											<input type="text" class="url" value="/franchise" />
+											<input type="text" class="url" value="/point" />
 											<span class="btn btn-block send">Выполнить</span>
 										</div>
-										<div class="tab-pane show_one" id="show_one_franchise">
+										<div class="tab-pane get_near_points" id="get_near_points">
+
+											<form class="form-horizontal">
+
+  												<div class="control-group">
+													<label class="control-label">Посмотреть на карте:</label>
+													<div class="controls">
+														<a href="http://maps.yandex.ru/?text=55.776692,37.585857" class="btn" target="_blank">http://maps.yandex.ru/?text=55.776692,37.585857</a>
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url input-xlarge" disabled="disabled" value="/point/55.776692x37.585857/1000" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="GET" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Широта x Долгота:</label>
+													<div class="controls">
+														<input type="text" class="latitude_point input-small" value="55.776692" /> x
+														<input type="text" class="longitude_point input-small" value="37.585857" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">В радиусе:</label>
+													<div class="controls">
+														<input type="text" class="distance_point" value="1000" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send">Выполнить</span>
+													</div>
+												</div>
+											</form>
+										</div>
+										<div class="tab-pane show_one" id="show_one_point">
 
 											<form class="form-horizontal">
   												<div class="control-group">
 													<label class="control-label">URL:</label>
 													<div class="controls">
-														<input type="text" class="url" disabled="disabled" value="/franchise/1" />
+														<input type="text" class="url" disabled="disabled" value="/point/1" />
 													</div>
 												</div>
 
@@ -242,7 +290,7 @@
   												<div class="control-group">
 													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" class="franchise_id" value="1" />
+														<input type="text" class="point_id" value="1" />
 													</div>
 												</div>
 
@@ -253,12 +301,13 @@
 												</div>
 											</form>
 										</div>
-										<div class="tab-pane create" id="create_franchise">
+										<div class="tab-pane create" id="create_point">
+											<strong>НЕ ГОТОВО</strong>
 											<form class="form-horizontal">
   												<div class="control-group">
 													<label class="control-label">URL:</label>
 													<div class="controls">
-														<input type="text" class="url" disabled="disabled" value="/franchise/" />
+														<input type="text" class="url" disabled="disabled" value="/point/" />
 													</div>
 												</div>
 
@@ -270,16 +319,30 @@
 												</div>
 
   												<div class="control-group">
-													<label class="control-label">Бренд*:</label>
+													<label class="control-label">Название*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="brand" />
+														<input type="text" name="franchise[title]" required="required" maxlength="100" class="latitude" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Описание(время работы)*:</label>
+													<div class="controls">
+														<textarea name="franchise[description]" required="required" class="description"></textarea>
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Широта*:</label>
+													<div class="controls">
+														<input type="text" name="franchise[latitude]" required="required" maxlength="100" class="latitude" />
 													</div>
 												</div>
 													
 												<div class="control-group">
-													<label class="control-label">Индустрия*:</label>
+													<label class="control-label">Долгота*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="industry" />
+														<input type="text" name="franchise[longitude]" required="required" maxlength="100" class="longitude" />
 													</div>
 												</div>
 
@@ -290,7 +353,7 @@
 												</div>
 											</form>
 										</div>
-										<div class="tab-pane update" id="update_franchise">
+										<div class="tab-pane update" id="update_point">
 											<form class="form-horizontal">
   												<div class="control-group">
 													<label class="control-label">URL:</label>
@@ -334,7 +397,7 @@
 												</div>
 											</form>
 										</div>
-										<div class="tab-pane delete" id="delete_franchise">
+										<div class="tab-pane delete" id="delete_point">
 											<form class="form-horizontal">
 												<div class="control-group">
 													<label class="control-label">URL:</label>
@@ -408,7 +471,7 @@
 						</div>
 					</div>
 	  			</div>
-	  			<div class="span6">
+	  			<div class="span5">
 	  				<h2>Результат</h2>
 	  				<div class="row-fluid thumbnail">
 
@@ -447,6 +510,16 @@
 		$('#delete_franchise .url').val('/franchise/'+$(this).val());
 	});
 
+	$('.latitude_point, .longitude_point, .distance_point').bind('change keyup', function() {
+		$('#get_near_points .url').val('/point/'
+										+parseFloat($('.latitude_point').val())
+										+'x'
+										+parseFloat($('.longitude_point').val())
+										+'/'
+										+parseInt($('.distance_point').val())
+									);
+	});
+
 
     $('#myTab a:first').tab('show');
     $('#myTab a').click(function (e) {
@@ -461,7 +534,7 @@
 		$('#response').html('');
     });
 
-    $('.send').click(function(){
+    $('#get_list_franchise .send').click(function(){
 		
 		$('.progress').show();
 		$('#status').html('');
@@ -542,12 +615,32 @@
 	$('.send_delete_franchise').click(function(){
 		
 		$('.progress').show();
-		$('#status').html('');
-		$('#response').html('');
+		$('#status, #response').html('');
 
 		$.ajax({
 		  type: "DELETE",
 		  url: '/app_dev.php'+$('#delete_franchise .url').val()
+		}).done(function( a,b,c) {
+		  console.log( "done: ",a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(c.status);
+		  $('#response').html(c.responseText);
+		}).error(function(a,b,c){
+		  console.log( "error: ", a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(a.status);
+		  $('#response').html(a.responseText);
+		});
+    });
+		
+	$('#get_near_points .send').click(function(){
+		
+		$('.progress').show();
+		$('#status, #response').html('');
+
+		$.ajax({
+		  type: "GET",
+		  url: '/app_dev.php'+$('#get_near_points .url').val()
 		}).done(function( a,b,c) {
 		  console.log( "done: ",a, b,c);
 		  $('.progress').hide();

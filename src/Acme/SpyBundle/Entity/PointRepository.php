@@ -14,7 +14,7 @@ class PointRepository extends EntityRepository
 {
     public function findTheNearestPoints($latitude, $longitude, $distance)
     {
-        if (0){ // dont work function 'acos'
+        if (0){ // dont work function 'acos'd
 			return $this->getEntityManager($latitude, $longitude, $distance)
 				->createQuery('SELECT id, title, latitude, longitude, (((acos(sin(('.$latitude.' * pi() / 180)) * sin((latitude * pi() / 180)) +
 												                        cos(('.$latitude.' * pi() / 180)) * cos((latitude * pi() / 180)) *
@@ -36,7 +36,7 @@ class PointRepository extends EntityRepository
 		$stmt->bindValue('latitude1', $latitude);
 		$stmt->bindValue('latitude2', $latitude);
 		$stmt->bindValue('longitude', $longitude);
-		$stmt->bindValue('distance', $distance);
+		$stmt->bindValue('distance', (int)$distance);
 		$stmt->execute();
 		return $stmt->fetchAll();
     }
