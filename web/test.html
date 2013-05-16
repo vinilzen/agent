@@ -19,14 +19,14 @@
 						<div class="accordion-group">
 							<div class="accordion-heading">
 								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFranchise">
-								Сеть
+								Сеть <span class="label label-success">Готово</span>
 								</a>
 							</div>
 							<div id="collapseFranchise" class="accordion-body collapse in">
 								<div class="accordion-inner">
 
 									<ul class="nav nav-tabs" id="myTab">
-										<li class="active"><a href="#get_list_franchise">GET LIST</a></li>
+										<li class="active"><a href="#list_franchise">GET LIST</a></li>
 										<li><a href="#show_one_franchise">SHOW ONE</a></li>
 										<li><a href="#create_franchise">CREATE</a></li>
 										<li><a href="#update_franchise">UPDATE</a></li>
@@ -34,10 +34,31 @@
 									</ul>
 									 
 									<div class="tab-content">
-										<div class="tab-pane active get_list" id="get_list_franchise">
-											<label>URL</label>
-											<input type="text" class="url" value="/franchise" />
-											<span class="btn btn-block send">Выполнить</span>
+										<div class="tab-pane active get_list" id="list_franchise">
+
+											<form class="form-horizontal">
+  												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url" disabled="disabled" value="/franchise" />
+													</div>
+												</div>
+
+
+  												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="GET" />
+													</div>
+												</div>
+
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send" data-section="list_franchise">Выполнить</span>
+													</div>
+												</div>
+											</form>
 										</div>
 										<div class="tab-pane show_one" id="show_one_franchise">
 
@@ -65,7 +86,7 @@
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send">Выполнить</span>
+														<span class="btn send" data-section="show_one_franchise">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -89,27 +110,27 @@
   												<div class="control-group">
 													<label class="control-label">Лого:</label>
 													<div class="controls">
-														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="logo" />
+														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="logo param" />
 													</div>
 												</div>
 
   												<div class="control-group">
 													<label class="control-label">Бренд*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="brand" />
+														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="brand param" />
 													</div>
 												</div>
 													
 												<div class="control-group">
 													<label class="control-label">Индустрия*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="industry" />
+														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="industry param" />
 													</div>
 												</div>
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send_create_franchise">Выполнить</span>
+														<span class="btn send" data-section="create_franchise">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -119,7 +140,7 @@
   												<div class="control-group">
 													<label class="control-label">URL:</label>
 													<div class="controls">
-														<input type="text" class="url" disabled="disabled" value="/franchise/" />
+														<input type="text" class="url" disabled="disabled" value="/franchise/1" />
 													</div>
 												</div>
 
@@ -140,27 +161,27 @@
   												<div class="control-group">
 													<label class="control-label">Лого:</label>
 													<div class="controls">
-														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="logo" />
+														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="param" />
 													</div>
 												</div>
 
   												<div class="control-group">
 													<label class="control-label">Бренд*:</label>
 													<div class="controls">
-														<input type="text" name="brand" required="required" maxlength="100" class=" brand" />
+														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="param" />
 													</div>
 												</div>
 													
 												<div class="control-group">
 													<label class="control-label">Индустрия*:</label>
 													<div class="controls">
-														<input type="text" name="industry" required="required" maxlength="100" class=" industry" />
+														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="param" />
 													</div>
 												</div>
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send_update_franchise">Выполнить</span>
+														<span class="btn send" data-section="update_franchise">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -182,7 +203,7 @@
 												</div>
 
 												<div class="control-group">
-													<label class="control-label">METHOD:</label>
+													<label class="control-label">ID:</label>
 													<div class="controls">
 														<input type="text" id="franchise_id" class="id" value="1" />
 													</div>
@@ -190,7 +211,7 @@
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send_delete_franchise">Выполнить</span>
+														<span class="btn send" data-section="delete_franchise">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -202,7 +223,7 @@
 						<div class="accordion-group">
 							<div class="accordion-heading">
 								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapsePoint">
-								Точки
+								Точки <span class="label label-warning">В процессе</span> <span class="label label-success">Готово только GET NEAR POINTS</span>
 								</a>
 							</div>
 							<div id="collapsePoint" class="accordion-body collapse">
@@ -225,7 +246,14 @@
 										</div>
 										<div class="tab-pane get_near_points" id="get_near_points">
 
+											
 											<form class="form-horizontal">
+
+  												<div class="control-group">
+  													<div class="controls">
+  														<p>для теста мы на станции метро Белорусская</p>
+  													</div>
+  												</div>
 
   												<div class="control-group">
 													<label class="control-label">Посмотреть на карте:</label>
@@ -265,7 +293,7 @@
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send">Выполнить</span>
+														<span class="btn send" data-section="get_near_points">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -321,34 +349,34 @@
   												<div class="control-group">
 													<label class="control-label">Название*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[title]" required="required" maxlength="100" class="latitude" />
+														<input type="text" name="franchise[title]" required="required" maxlength="100" class="latitude param" />
 													</div>
 												</div>
 
   												<div class="control-group">
 													<label class="control-label">Описание(время работы)*:</label>
 													<div class="controls">
-														<textarea name="franchise[description]" required="required" class="description"></textarea>
+														<textarea name="franchise[description]" required="required" class="description param"></textarea>
 													</div>
 												</div>
 
   												<div class="control-group">
 													<label class="control-label">Широта*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[latitude]" required="required" maxlength="100" class="latitude" />
+														<input type="text" name="franchise[latitude]" required="required" maxlength="100" class="latitude param" />
 													</div>
 												</div>
 													
 												<div class="control-group">
 													<label class="control-label">Долгота*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[longitude]" required="required" maxlength="100" class="longitude" />
+														<input type="text" name="franchise[longitude]" required="required" maxlength="100" class="longitude param" />
 													</div>
 												</div>
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send_create_franchise">Выполнить</span>
+														<span class="btn send" data-section="create_point">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -434,7 +462,7 @@
 						<div class="accordion-group">
 							<div class="accordion-heading">
 								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseMission">
-								Задания
+								Задания <span class="label label-important">Не готово</span>
 								</a>
 							</div>
 							<div id="collapseMission" class="accordion-body collapse">
@@ -510,6 +538,10 @@
 		$('#delete_franchise .url').val('/franchise/'+$(this).val());
 	});
 
+	$('#update_franchise .id').bind('change keyup', function() {
+		$('#update_franchise .url').val('/franchise/'+$(this).val());
+	});
+
 	$('.latitude_point, .longitude_point, .distance_point').bind('change keyup', function() {
 		$('#get_near_points .url').val('/point/'
 										+parseFloat($('.latitude_point').val())
@@ -534,6 +566,7 @@
 		$('#response').html('');
     });
 
+/*
     $('#get_list_franchise .send').click(function(){
 		
 		$('.progress').show();
@@ -653,6 +686,48 @@
 		  $('#response').html(a.responseText);
 		});
     });
+    */
+		
+	$('.send').click(function(){
+		
+		var id = $(this).attr('data-section'),
+			data = {};
+
+		$('.progress').show();
+		$('#status, #response').html('');
+
+		$("#"+id+" .param").each(function() {
+		  data[$(this).attr('name')] = $(this).val();
+		});
+
+		console.log(data);
+
+		$.ajax({
+
+		  type: $('#'+id+' .method').val(),
+
+		  url: '/app_dev.php'+$('#'+id+' .url').val(),
+
+		  data:data
+
+		}).done(function( a,b,c) {
+
+		  console.log( "done: ",a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(c.status);
+		  $('#response').html(c.responseText);
+
+		}).error(function(a,b,c){
+
+		  console.log( "error: ", a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(a.status);
+		  $('#response').html(a.responseText);
+
+		});
+    });
+
+
 
   })
 </script>
