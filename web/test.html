@@ -87,6 +87,189 @@
 												</div>
 
   												<div class="control-group">
+													<label class="control-label">Лого:</label>
+													<div class="controls">
+														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="logo" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Бренд*:</label>
+													<div class="controls">
+														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="brand" />
+													</div>
+												</div>
+													
+												<div class="control-group">
+													<label class="control-label">Индустрия*:</label>
+													<div class="controls">
+														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="industry" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send_create_franchise">Выполнить</span>
+													</div>
+												</div>
+											</form>
+										</div>
+										<div class="tab-pane update" id="update_franchise">
+											<form class="form-horizontal">
+  												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url" disabled="disabled" value="/franchise/" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="PUT" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">ID:</label>
+													<div class="controls">
+														<input type="text" class="id" name="id" value="1" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Лого:</label>
+													<div class="controls">
+														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="logo" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Бренд*:</label>
+													<div class="controls">
+														<input type="text" name="brand" required="required" maxlength="100" class=" brand" />
+													</div>
+												</div>
+													
+												<div class="control-group">
+													<label class="control-label">Индустрия*:</label>
+													<div class="controls">
+														<input type="text" name="industry" required="required" maxlength="100" class=" industry" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send_update_franchise">Выполнить</span>
+													</div>
+												</div>
+											</form>
+										</div>
+										<div class="tab-pane delete" id="delete_franchise">
+											<form class="form-horizontal">
+												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url" disabled="disabled" id="show_one_franchise" value="/franchise/1" />
+	  												</div>
+	  											</div>
+
+												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="DELETE" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" id="franchise_id" class="id" value="1" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send_delete_franchise">Выполнить</span>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="accordion-group">
+							<div class="accordion-heading">
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapsePoint">
+								Точки
+								</a>
+							</div>
+							<div id="collapsePoint" class="accordion-body collapse">
+								<div class="accordion-inner">
+
+									<ul class="nav nav-tabs" id="myTab">
+										<li class="active"><a href="#get_list_franchise">GET LIST</a></li>
+										<li><a href="#show_one_franchise">SHOW ONE</a></li>
+										<li><a href="#create_franchise">CREATE</a></li>
+										<li><a href="#update_franchise">UPDATE</a></li>
+										<li><a href="#delete_franchise">DELETE</a></li>
+									</ul>
+									 
+									<div class="tab-content">
+										<div class="tab-pane active get_list" id="get_list_franchise">
+											<label>URL</label>
+											<input type="text" class="url" value="/franchise" />
+											<span class="btn btn-block send">Выполнить</span>
+										</div>
+										<div class="tab-pane show_one" id="show_one_franchise">
+
+											<form class="form-horizontal">
+  												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url" disabled="disabled" value="/franchise/1" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="GET" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">ID:</label>
+													<div class="controls">
+														<input type="text" class="franchise_id" value="1" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send">Выполнить</span>
+													</div>
+												</div>
+											</form>
+										</div>
+										<div class="tab-pane create" id="create_franchise">
+											<form class="form-horizontal">
+  												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url" disabled="disabled" value="/franchise/" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="POST" />
+													</div>
+												</div>
+
+  												<div class="control-group">
 													<label class="control-label">Бренд*:</label>
 													<div class="controls">
 														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="brand" />
@@ -146,30 +329,42 @@
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send">Выполнить</span>
+														<span class="btn send_update_franchise">Выполнить</span>
 													</div>
 												</div>
 											</form>
 										</div>
 										<div class="tab-pane delete" id="delete_franchise">
-											<label>URL</label>
-											<input type="text" class="url" disabled="disabled" id="show_one_franchise" value="/franchise/1" />
-											<input type="text" id="franchise_id" value="1" />
-											<span class="btn btn-block send">Выполнить</span>
+											<form class="form-horizontal">
+												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url" disabled="disabled" id="show_one_franchise" value="/franchise/1" />
+	  												</div>
+	  											</div>
+
+												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="DELETE" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" id="franchise_id" class="id" value="1" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send_delete_franchise">Выполнить</span>
+													</div>
+												</div>
+											</form>
 										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapsePoint">
-								Точки
-								</a>
-							</div>
-							<div id="collapsePoint" class="accordion-body collapse">
-								<div class="accordion-inner">
-								Anim pariatur cliche...
 								</div>
 							</div>
 						</div>
@@ -239,12 +434,19 @@
 <script>
   $(function () {
 
-	$('.franchise_id').change(function() {
-	  $('#show_one_franchise .url').val('/franchise/'+$(this).val());
+
+	$('.franchise_id').bind('change keyup', function() {
+		$('#show_one_franchise .url').val('/franchise/'+$(this).val());
 	});
-	$('.franchise_id').keyup(function() {
-	  $('#show_one_franchise .url').val('/franchise/'+$(this).val());
+	
+	$('#update_franchise .id').bind('change keyup', function() {
+		$('#update_franchise .url').val('/franchise/'+$(this).val());
 	});
+
+	$('#delete_franchise .id').bind('change keyup', function() {
+		$('#delete_franchise .url').val('/franchise/'+$(this).val());
+	});
+
 
     $('#myTab a:first').tab('show');
     $('#myTab a').click(function (e) {
@@ -282,7 +484,7 @@
 
     })
 
-    $('.send_create_franchise').click(function(){
+	$('.send_create_franchise').click(function(){
 		
 		$('.progress').show();
 		$('#status').html('');
@@ -291,7 +493,10 @@
 		$.ajax({
 		  type: "POST",
 		  url: '/app_dev.php'+$('#create_franchise .url').val(),
-		  data: { 'franchise[brand]': $('.brand').val(), 'franchise[industry]': $('.industry').val() }
+		  data: {	'franchise[brand]': $('#create_franchise .brand').val(), 
+		  			'franchise[industry]': $('#create_franchise .industry').val(),
+		  			'franchise[logo]': $('#create_franchise .logo').val(),
+		  		}
 		}).done(function( a,b,c) {
 		  console.log( "done: ",a, b,c);
 		  $('.progress').hide();
@@ -304,7 +509,57 @@
 		  $('#response').html(a.responseText);
 		});
 
-    })
+    });
+
+	$('.send_update_franchise').click(function(){
+		
+		$('.progress').show();
+		$('#status').html('');
+		$('#response').html('');
+
+		$.ajax({
+		  type: "PUT",
+		  url: '/app_dev.php'+$('#update_franchise .url').val(),
+		  data: {	'franchise[brand]': $('#update_franchise .brand').val(), 
+		  			'franchise[industry]': $('#update_franchise .industry').val(),
+		  			'franchise[logo]': $('#update_franchise .logo').val(),
+		  		}
+		}).done(function( a,b,c) {
+		  console.log( "done: ",a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(c.status);
+		  $('#response').html(c.responseText);
+		}).error(function(a,b,c){
+		  console.log( "error: ", a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(a.status);
+		  $('#response').html(a.responseText);
+		});
+
+
+    });
+		
+	$('.send_delete_franchise').click(function(){
+		
+		$('.progress').show();
+		$('#status').html('');
+		$('#response').html('');
+
+		$.ajax({
+		  type: "DELETE",
+		  url: '/app_dev.php'+$('#delete_franchise .url').val()
+		}).done(function( a,b,c) {
+		  console.log( "done: ",a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(c.status);
+		  $('#response').html(c.responseText);
+		}).error(function(a,b,c){
+		  console.log( "error: ", a, b,c);
+		  $('.progress').hide();
+		  $('#status').html(a.status);
+		  $('#response').html(a.responseText);
+		});
+    });
 
   })
 </script>

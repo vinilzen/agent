@@ -28,12 +28,22 @@ class QuestionController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AcmeSpyBundle:Question')->findAll();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
 
-        return array(
-            'entities' => $entities,
-        );
+        $json_string = json_encode('Для получения списка вопросов необходимо указать id задания (/question/mission/{mission_id})');
+        $json_string = MissionController::utf_cyr($json_string);
+        $response->setStatusCode(400);
+        $response->setContent($json_string);
+        return $response;
     }
 
 

@@ -32,6 +32,13 @@ class Franchise
     /**
      * @var string
      *
+     * @ORM\Column(name="logo", type="string", length=100, nullable=true)
+     */
+    private $logo;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="industry", type="string", length=100)
      */
     private $industry;
@@ -138,5 +145,52 @@ class Franchise
     function __toString()
     {
         return (string)$this->getBrand();
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     * @return Franchise
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @param Boolean $absolute
+     *
+     * @return string 
+     */
+    public function getLogo($absolute = false)
+    {
+        if ('' == $this->logo || null === $this->logo) {
+            return '';
+        }
+
+        return self::getLogoPath($absolute).'/'.$this->logo;
+    }
+
+
+    /**
+     * Get logo storage path
+     *
+     * @param Boolean $absolute
+     *
+     * @return string
+     */
+    public static function getLogoPath($absolute = false)
+    {
+        $path = '';
+        if ($absolute) {
+            $path = realpath(__DIR__.'/../../../../../web').'/';
+        }
+
+        return $path.'uploads/logo';
     }
 }

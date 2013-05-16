@@ -11,6 +11,7 @@ class FranchiseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('logo')
             ->add('brand')
             ->add('industry')
         ;
@@ -28,4 +29,13 @@ class FranchiseType extends AbstractType
     {
         return 'franchise';
     }
+    /*
+    public function getDefaultOptions(array $options)
+    {
+        $options = parent::getDefaultOptions($options);
+        $options['csrf_protection'] = false;
+
+        return $options;
+    }
+    */
 }
