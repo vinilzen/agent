@@ -32,6 +32,13 @@ class Mission
     /**
      * @var boolean
      *
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+    private $active;
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="need_buy", type="boolean", nullable=true)
      */
     private $needBuy;

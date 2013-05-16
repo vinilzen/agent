@@ -58,6 +58,59 @@ class PointController extends Controller
 
         return $response;
     }
+    /**
+     * Lists The Nearest Points Point entities.
+     *
+     * @Route("/{latitude}x{longitude}/{distance}", name="nearest_point")
+     * @Method("GET")
+     * @Template()
+     */
+    public function nearest_pointAction($latitude, $longitude, $distance)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /*
+         * return array [{id, title, latitude, longitude, distance}, ...]
+         */
+        $results = $em
+                    ->getRepository('AcmeSpyBundle:Point')
+                    ->findTheNearestPoints($latitude, $longitude, $distance);
+
+        
+        if (count($results)){
+            foreach ($results as $point) {
+                $entities_array[] = array(
+                    'id'            =>  $point['id'],
+                    'title'         =>  $point['title'],
+                    'distance'      =>  round($point['distance']),
+                    'latitude'      =>  $point['latitude'],
+                    'longitude'     =>  $point['longitude']
+                );
+            }
+
+            $json_string = MissionController::utf_cyr(json_encode($entities_array));
+       
+        } else {
+
+            $json_string = MissionController::utf_cyr(json_encode('В радиусе '.$distance.'м заведений не обнаружено.'));
+
+        }
+
+
+        $response = new Response();
+        $response->setContent($json_string);
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
+        return $response;
+    }
 
     /**
      * Creates a new Point entity.

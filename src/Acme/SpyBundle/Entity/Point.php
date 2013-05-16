@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Point
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acme\SpyBundle\Entity\PointRepository")
  */
 class Point
 {
@@ -28,6 +28,13 @@ class Point
      * @ORM\Column(name="title", type="string", length=100)
      */
     private $title;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+    private $active;
 
     /**
      * @var string
