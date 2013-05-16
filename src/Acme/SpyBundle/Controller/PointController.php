@@ -188,7 +188,8 @@ class PointController extends Controller
                 'id'            =>  $entity->getId(),
                 'title'         =>  $entity->getTitle(),
                 'description'   =>  $entity->getDescription(),
-                'coordinates'   =>  $entity->getCoordinates(),
+                'latitude'   =>  $entity->getLatitude(),
+                'longitude'   =>  $entity->getLongitude(),
                 'franchise'     =>  $entity->getFranchise()!=NULL?$entity->getFranchise()->getId():0
             );
 

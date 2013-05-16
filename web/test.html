@@ -240,9 +240,28 @@
 									 
 									<div class="tab-content">
 										<div class="tab-pane active get_list" id="get_points">
-											<label>URL</label>
-											<input type="text" class="url" value="/point" />
-											<span class="btn btn-block send">Выполнить</span>
+
+											<form class="form-horizontal">
+  												<div class="control-group">
+													<label class="control-label">URL:</label>
+													<div class="controls">
+														<input type="text" class="url" disabled="disabled" value="/point" />
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">METHOD:</label>
+													<div class="controls">
+														<input type="text" class="method" disabled="disabled" value="GET" />
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<span class="btn send" data-section="get_points">Выполнить</span>
+													</div>
+												</div>
+											</form>
 										</div>
 										<div class="tab-pane get_near_points" id="get_near_points">
 
@@ -318,13 +337,13 @@
   												<div class="control-group">
 													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" class="point_id" value="1" />
+														<input type="text" class="id" value="1" />
 													</div>
 												</div>
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send">Выполнить</span>
+														<span class="btn send" data-section="show_one_point">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -386,7 +405,7 @@
   												<div class="control-group">
 													<label class="control-label">URL:</label>
 													<div class="controls">
-														<input type="text" class="url" disabled="disabled" value="/franchise/" />
+														<input type="text" class="url" disabled="disabled" value="/point/1" />
 													</div>
 												</div>
 
@@ -538,8 +557,13 @@
 		$('#delete_franchise .url').val('/franchise/'+$(this).val());
 	});
 
-	$('#update_franchise .id').bind('change keyup', function() {
-		$('#update_franchise .url').val('/franchise/'+$(this).val());
+	$('#show_one_point .id').bind('change keyup', function() {
+		$('#show_one_point .url').val('/point/'+$(this).val());
+	});
+
+
+	$('#update_point .id').bind('change keyup', function() {
+		$('#update_point .url').val('/point/'+$(this).val());
 	});
 
 	$('.latitude_point, .longitude_point, .distance_point').bind('change keyup', function() {
@@ -566,128 +590,6 @@
 		$('#response').html('');
     });
 
-/*
-    $('#get_list_franchise .send').click(function(){
-		
-		$('.progress').show();
-		$('#status').html('');
-		$('#response').html('');
-
-		$.ajax({
-		  type: "GET",
-		  url: '/app_dev.php'+$('.active .url').val()
-		}).done(function( a,b,c) {
-		  console.log( "done: ",a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(c.status);
-		  $('#response').html(c.responseText);
-		}).error(function(a,b,c){
-		  console.log( "error: ", a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(a.status);
-		  $('#response').html(a.responseText);
-		});
-
-    })
-
-	$('.send_create_franchise').click(function(){
-		
-		$('.progress').show();
-		$('#status').html('');
-		$('#response').html('');
-
-		$.ajax({
-		  type: "POST",
-		  url: '/app_dev.php'+$('#create_franchise .url').val(),
-		  data: {	'franchise[brand]': $('#create_franchise .brand').val(), 
-		  			'franchise[industry]': $('#create_franchise .industry').val(),
-		  			'franchise[logo]': $('#create_franchise .logo').val(),
-		  		}
-		}).done(function( a,b,c) {
-		  console.log( "done: ",a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(c.status);
-		  $('#response').html(c.responseText);
-		}).error(function(a,b,c){
-		  console.log( "error: ", a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(a.status);
-		  $('#response').html(a.responseText);
-		});
-
-    });
-
-	$('.send_update_franchise').click(function(){
-		
-		$('.progress').show();
-		$('#status').html('');
-		$('#response').html('');
-
-		$.ajax({
-		  type: "PUT",
-		  url: '/app_dev.php'+$('#update_franchise .url').val(),
-		  data: {	'franchise[brand]': $('#update_franchise .brand').val(), 
-		  			'franchise[industry]': $('#update_franchise .industry').val(),
-		  			'franchise[logo]': $('#update_franchise .logo').val(),
-		  		}
-		}).done(function( a,b,c) {
-		  console.log( "done: ",a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(c.status);
-		  $('#response').html(c.responseText);
-		}).error(function(a,b,c){
-		  console.log( "error: ", a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(a.status);
-		  $('#response').html(a.responseText);
-		});
-
-
-    });
-		
-	$('.send_delete_franchise').click(function(){
-		
-		$('.progress').show();
-		$('#status, #response').html('');
-
-		$.ajax({
-		  type: "DELETE",
-		  url: '/app_dev.php'+$('#delete_franchise .url').val()
-		}).done(function( a,b,c) {
-		  console.log( "done: ",a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(c.status);
-		  $('#response').html(c.responseText);
-		}).error(function(a,b,c){
-		  console.log( "error: ", a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(a.status);
-		  $('#response').html(a.responseText);
-		});
-    });
-		
-	$('#get_near_points .send').click(function(){
-		
-		$('.progress').show();
-		$('#status, #response').html('');
-
-		$.ajax({
-		  type: "GET",
-		  url: '/app_dev.php'+$('#get_near_points .url').val()
-		}).done(function( a,b,c) {
-		  console.log( "done: ",a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(c.status);
-		  $('#response').html(c.responseText);
-		}).error(function(a,b,c){
-		  console.log( "error: ", a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(a.status);
-		  $('#response').html(a.responseText);
-		});
-    });
-    */
-		
 	$('.send').click(function(){
 		
 		var id = $(this).attr('data-section'),
@@ -705,9 +607,7 @@
 		$.ajax({
 
 		  type: $('#'+id+' .method').val(),
-
 		  url: '/app_dev.php'+$('#'+id+' .url').val(),
-
 		  data:data
 
 		}).done(function( a,b,c) {
