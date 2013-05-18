@@ -28,21 +28,30 @@ class FranchiseController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AcmeSpyBundle:Franchise')->findAll();
+        $response = new Response();
 
-        foreach ($entities as $entity) {
-            $entities_array[] = array(
-                'id' => $entity->getId(),
-                'logo' => $entity->getLogo(),
-                'brand' => $entity->getBrand(),
-                'industry' => $entity->getIndustry()
-            );
+        if (false === $this->get('security.context')->isGranted('ROLE_USER')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
+
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+            $entities = $em->getRepository('AcmeSpyBundle:Franchise')->findAll();
+
+            foreach ($entities as $entity) {
+                $entities_array[] = array(
+                    'id' => $entity->getId(),
+                    'logo' => $entity->getLogo(),
+                    'brand' => $entity->getBrand(),
+                    'industry' => $entity->getIndustry()
+                );
+            }
+
+            $json_string = MissionController::utf_cyr(json_encode($entities_array));
         }
 
-        $json_string = MissionController::utf_cyr(json_encode($entities_array));
-
-        $response = new Response();
         $response->setContent($json_string);
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
         $response->setCache(array(
@@ -66,11 +75,32 @@ class FranchiseController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity  = new Franchise();
-        $form = $this->createForm(new FranchiseType(), $entity);
-        $form->bind($request);
-
         $response = new Response();
+
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
+
+        } else {
+
+            $entity  = new Franchise();
+            $form = $this->createForm(new FranchiseType(), $entity);
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+
+                $json_string = json_encode($entity->getId());
+            } else {
+                $errors = $form->getErrors();
+                $json_string = json_encode(serialize($errors));
+                $response->setStatusCode(400);
+            }
+        }
+
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
         $response->setCache(array(
             'etag'          => 'abcdef',
@@ -80,27 +110,6 @@ class FranchiseController extends Controller
             'private'       => false,
             'public'        => true,
         ));
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            $json_string = json_encode($entity->getId());
-        } else {
-            $errors = $form->getErrors();
-/*
-            var_dump($errors);
-            foreach ($errors as $k => $v) {
-                print_r($k, true);
-                print_r($v, true);
-            } die;*/
-
-            $json_string = json_encode(serialize($errors));
-           // $json_string = json_encode('Неверный запрос');
-            $response->setStatusCode(400);
-        }
-
         $response->setContent($json_string);
         return $response;
     }
@@ -175,31 +184,40 @@ class FranchiseController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $response = new Response();
 
-        $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
 
-        if (!$entity) {
-            $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
-            
-            $response = new Response();
-            $response->setStatusCode(404);
-            $response->setContent($json_string);
-            $response->headers->set('Content-Type', 'application/json; charset=utf-8');
-            $response->setCache(array(
-                'etag'          => 'abcdef',
-                'last_modified' => new \DateTime(),
-                'max_age'       => 0,
-                's_maxage'      => 0,
-                'private'       => false,
-                'public'        => true,
-            ));
-            
-            return $response;
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
+
+            if (!$entity) {
+                $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
+                
+                $response->setStatusCode(404);
+                $response->setContent($json_string);
+                $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+                $response->setCache(array(
+                    'etag'          => 'abcdef',
+                    'last_modified' => new \DateTime(),
+                    'max_age'       => 0,
+                    's_maxage'      => 0,
+                    'private'       => false,
+                    'public'        => true,
+                ));
+                
+                return $response;
+            }
+
+            $editForm = $this->createForm(new FranchiseType(), $entity);
+            $deleteForm = $this->createDeleteForm($id);
         }
-
-        $editForm = $this->createForm(new FranchiseType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
@@ -217,11 +235,45 @@ class FranchiseController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
-
-
         $response = new Response();
+
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
+
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
+
+
+
+            if (!$entity) {
+                $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
+                
+                $response->setStatusCode(404);
+                $response->setContent($json_string);
+                return $response;
+            }
+
+            $deleteForm = $this->createDeleteForm($id);
+            $editForm = $this->createForm(new FranchiseType(), $entity);
+            $editForm->bind($request);
+
+            if ($editForm->isValid()) {
+                $em->persist($entity);
+                $em->flush();
+
+                $json_string = json_encode($entity->getId());
+            } else {
+                $errors = $form->getErrors();
+                $json_string = json_encode(serialize($errors));
+                //$json_string = json_encode('Неверный запрос');
+                $response->setStatusCode(400);
+            }
+        }
+
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
         $response->setCache(array(
             'etag'          => 'abcdef',
@@ -231,31 +283,6 @@ class FranchiseController extends Controller
             'private'       => false,
             'public'        => true,
         ));
-
-        if (!$entity) {
-            $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
-            
-            $response->setStatusCode(404);
-            $response->setContent($json_string);
-            return $response;
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new FranchiseType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-            $json_string = json_encode($entity->getId());
-        } else {
-            $errors = $form->getErrors();
-            $json_string = json_encode(serialize($errors));
-            //$json_string = json_encode('Неверный запрос');
-            $response->setStatusCode(400);
-        }
-
         $response->setContent($json_string);
         return $response;
     }
@@ -268,10 +295,42 @@ class FranchiseController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
         $response = new Response();
+
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
+
+        } else {
+
+            $form = $this->createDeleteForm($id);
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
+
+                if (!$entity) {
+                    $json_string = json_encode('Сеть не найдена');
+                    $response->setStatusCode(404);
+                } else {
+                    $em->remove($entity);
+                    $em->flush();
+                    $json_string = $id;
+                }
+                
+            } else {
+
+                $errors = $form->getErrors();
+                $json_string = json_encode(serialize($errors));
+                $response->setStatusCode(400);
+                //$json_string = json_encode('Неверный запрос');
+            }
+
+            $json_string = MissionController::utf_cyr($json_string);
+        }
+
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
         $response->setCache(array(
             'etag'          => 'abcdef',
@@ -281,29 +340,6 @@ class FranchiseController extends Controller
             'private'       => false,
             'public'        => true,
         ));
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
-
-            if (!$entity) {
-                $json_string = json_encode('Сеть не найдена');
-                $response->setStatusCode(404);
-            } else {
-                $em->remove($entity);
-                $em->flush();
-                $json_string = $id;
-            }
-            
-        } else {
-
-            $errors = $form->getErrors();
-            $json_string = json_encode(serialize($errors));
-            $response->setStatusCode(400);
-            //$json_string = json_encode('Неверный запрос');
-        }
-
-        $json_string = MissionController::utf_cyr($json_string);
         $response->setContent($json_string);
 
         return $response;
