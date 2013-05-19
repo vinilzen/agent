@@ -13,20 +13,23 @@ class PointType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
-            ->add('logo')
-            ->add('coordinates')
+            ->add('longitude')
+            ->add('latitude')
+            ->add('active') 
+            ->add('franchise')
         ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\SpyBundle\Entity\Point'
+            'data_class' => 'Acme\SpyBundle\Entity\Point',
+            'csrf_protection' => false
         ));
     }
 
     public function getName()
     {
-        return 'acme_spybundle_pointtype';
+        return 'point';
     }
 }

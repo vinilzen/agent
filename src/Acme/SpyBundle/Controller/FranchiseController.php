@@ -94,11 +94,13 @@ class FranchiseController extends Controller
                 $em->flush();
 
                 $json_string = json_encode($entity->getId());
+                $response->setStatusCode(201); // created
             } else {
                 $errors = $form->getErrors();
                 $json_string = json_encode(serialize($errors));
                 $response->setStatusCode(400);
             }
+            
         }
 
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
@@ -112,24 +114,6 @@ class FranchiseController extends Controller
         ));
         $response->setContent($json_string);
         return $response;
-    }
-
-    /**
-     * Displays a form to create a new Franchise entity.
-     *
-     * @Route("/new", name="franchise_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Franchise();
-        $form   = $this->createForm(new FranchiseType(), $entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
     }
 
     /**
@@ -247,30 +231,28 @@ class FranchiseController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AcmeSpyBundle:Franchise')->find($id);
 
-
-
             if (!$entity) {
                 $json_string = MissionController::utf_cyr(json_encode('Сеть не найдена'));
                 
                 $response->setStatusCode(404);
                 $response->setContent($json_string);
-                return $response;
-            }
-
-            $deleteForm = $this->createDeleteForm($id);
-            $editForm = $this->createForm(new FranchiseType(), $entity);
-            $editForm->bind($request);
-
-            if ($editForm->isValid()) {
-                $em->persist($entity);
-                $em->flush();
-
-                $json_string = json_encode($entity->getId());
             } else {
-                $errors = $form->getErrors();
-                $json_string = json_encode(serialize($errors));
-                //$json_string = json_encode('Неверный запрос');
-                $response->setStatusCode(400);
+
+                $deleteForm = $this->createDeleteForm($id);
+                $editForm = $this->createForm(new FranchiseType(), $entity);
+                $editForm->bind($request);
+
+                if ($editForm->isValid()) {
+                    $em->persist($entity);
+                    $em->flush();
+
+                    $json_string = json_encode($entity->getId());
+                } else {
+                    $errors = $form->getErrors();
+                    $json_string = json_encode(serialize($errors));
+                    //$json_string = json_encode('Неверный запрос');
+                    $response->setStatusCode(400);
+                }
             }
         }
 

@@ -80,7 +80,7 @@
   												<div class="control-group">
 													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" class="franchise_id" value="1" />
+														<input type="text" class="id" data-section="show_one_franchise" data-url="franchise" value="1" />
 													</div>
 												</div>
 
@@ -111,6 +111,7 @@
 													<label class="control-label">Лого:</label>
 													<div class="controls">
 														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="logo param" />
+														<span class="help-inline">franchise[logo]</span>
 													</div>
 												</div>
 
@@ -118,6 +119,7 @@
 													<label class="control-label">Бренд*:</label>
 													<div class="controls">
 														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="brand param" />
+														<span class="help-inline">franchise[brand]</span>
 													</div>
 												</div>
 													
@@ -125,6 +127,7 @@
 													<label class="control-label">Индустрия*:</label>
 													<div class="controls">
 														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="industry param" />
+														<span class="help-inline">franchise[industry]</span>
 													</div>
 												</div>
 
@@ -154,7 +157,7 @@
   												<div class="control-group">
 													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" class="id" name="id" value="1" />
+														<input type="text" class="id" name="id"  data-section="update_franchise" data-url="franchise" value="1" />
 													</div>
 												</div>
 
@@ -162,6 +165,7 @@
 													<label class="control-label">Лого:</label>
 													<div class="controls">
 														<input type="text" name="franchise[logo]" required="required" maxlength="100" class="param" />
+														<span class="help-inline">franchise[logo]</span>
 													</div>
 												</div>
 
@@ -169,6 +173,7 @@
 													<label class="control-label">Бренд*:</label>
 													<div class="controls">
 														<input type="text" name="franchise[brand]" required="required" maxlength="100" class="param" />
+														<span class="help-inline">franchise[brand]</span>
 													</div>
 												</div>
 													
@@ -176,6 +181,7 @@
 													<label class="control-label">Индустрия*:</label>
 													<div class="controls">
 														<input type="text" name="franchise[industry]" required="required" maxlength="100" class="param" />
+														<span class="help-inline">franchise[industry]</span>
 													</div>
 												</div>
 
@@ -205,7 +211,7 @@
 												<div class="control-group">
 													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" id="franchise_id" class="id" value="1" />
+														<input type="text"  data-section="delete_franchise" data-url="franchise" class="id" value="1" />
 													</div>
 												</div>
 
@@ -337,7 +343,7 @@
   												<div class="control-group">
 													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" class="id" value="1" />
+														<input type="text" class="id" data-section="show_one_point" data-url="point" value="1" />
 													</div>
 												</div>
 
@@ -368,28 +374,57 @@
   												<div class="control-group">
 													<label class="control-label">Название*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[title]" required="required" maxlength="100" class="latitude param" />
+														<input type="text" name="point[title]" required="required" maxlength="100" class="latitude param" />
+														<span class="help-inline">point[title]</span>
 													</div>
 												</div>
 
   												<div class="control-group">
 													<label class="control-label">Описание(время работы)*:</label>
+
 													<div class="controls">
-														<textarea name="franchise[description]" required="required" class="description param"></textarea>
+														<textarea name="point[description]" required="required" class="description param"></textarea>
+														<span class="help-inline">point[description]</span>
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Активность*:</label>
+
+													<div class="controls">
+														<label class="radio inline">
+														  <input type="radio" name="point[active]" class="param" value="1" checked>
+														  Точка активна
+														</label>
+														<label class="radio inline">
+														  <input type="radio" name="point[active]" class="param" value="0">
+														  Не активна
+														</label>
+														<span class="help-inline">point[active]</span>
 													</div>
 												</div>
 
   												<div class="control-group">
 													<label class="control-label">Широта*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[latitude]" required="required" maxlength="100" class="latitude param" />
+														<input type="text" name="point[latitude]" required="required" maxlength="12" class="param" />
+														<span class="help-inline">point[latitude]</span>
 													</div>
 												</div>
 													
 												<div class="control-group">
 													<label class="control-label">Долгота*:</label>
 													<div class="controls">
-														<input type="text" name="franchise[longitude]" required="required" maxlength="100" class="longitude param" />
+														<input type="text" name="point[longitude]" required="required" maxlength="12" class="param" />
+														<span class="help-inline">point[longitude]</span>
+													</div>
+												</div>
+													
+												<div class="control-group">
+													<label class="control-label">Сеть*:</label>
+													<div class="controls">
+														<input type="text" name="point[franchise]" required="required" maxlength="100" class="param" />
+														<span class="help-inline">point[franchise]</span>
 													</div>
 												</div>
 
@@ -419,27 +454,70 @@
   												<div class="control-group">
 													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" class="id" name="id" value="1" />
+														<input type="text" class="id"  data-section="update_point" data-url="point" name="id" value="1" />
 													</div>
 												</div>
 
   												<div class="control-group">
-													<label class="control-label">Бренд*:</label>
+													<label class="control-label">Название*:</label>
 													<div class="controls">
-														<input type="text" name="brand" required="required" maxlength="100" class=" brand" />
+														<input type="text" name="point[title]" required="required" maxlength="100" class="latitude param" />
+														<span class="help-inline">point[title]</span>
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Описание(время работы)*:</label>
+
+													<div class="controls">
+														<textarea name="point[description]" required="required" class="description param"></textarea>
+														<span class="help-inline">point[description]</span>
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Активность*:</label>
+
+													<div class="controls">
+														<label class="radio inline">
+														  <input type="radio" name="point[active]" class="param" value="1" checked>
+														  Точка активна
+														</label>
+														<label class="radio inline">
+														  <input type="radio" name="point[active]" class="param" value="0">
+														  Не активна
+														</label>
+														<span class="help-inline">point[active]</span>
+													</div>
+												</div>
+
+  												<div class="control-group">
+													<label class="control-label">Широта*:</label>
+													<div class="controls">
+														<input type="text" name="point[latitude]" required="required" maxlength="12" class="param" />
+														<span class="help-inline">point[latitude]</span>
 													</div>
 												</div>
 													
 												<div class="control-group">
-													<label class="control-label">Индустрия*:</label>
+													<label class="control-label">Долгота*:</label>
 													<div class="controls">
-														<input type="text" name="industry" required="required" maxlength="100" class=" industry" />
+														<input type="text" name="point[longitude]" required="required" maxlength="12" class="param" />
+														<span class="help-inline">point[longitude]</span>
+													</div>
+												</div>
+													
+												<div class="control-group">
+													<label class="control-label">Сеть*:</label>
+													<div class="controls">
+														<input type="text" name="point[franchise]" required="required" maxlength="100" class="param" />
+														<span class="help-inline">point[franchise]</span>
 													</div>
 												</div>
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send_update_franchise">Выполнить</span>
+														<span class="btn send" data-section="update_point">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -449,7 +527,7 @@
 												<div class="control-group">
 													<label class="control-label">URL:</label>
 													<div class="controls">
-														<input type="text" class="url" disabled="disabled" id="show_one_franchise" value="/franchise/1" />
+														<input type="text" class="url" disabled="disabled" value="/point/1" />
 	  												</div>
 	  											</div>
 
@@ -461,15 +539,15 @@
 												</div>
 
 												<div class="control-group">
-													<label class="control-label">METHOD:</label>
+													<label class="control-label">ID:</label>
 													<div class="controls">
-														<input type="text" id="franchise_id" class="id" value="1" />
+														<input type="text" data-section="delete_point" data-url="point" class="id" value="1" />
 													</div>
 												</div>
 
 												<div class="control-group">
 													<div class="controls">
-														<span class="btn send_delete_franchise">Выполнить</span>
+														<span class="btn send" data-section="delete_point">Выполнить</span>
 													</div>
 												</div>
 											</form>
@@ -504,7 +582,7 @@
 										<div class="tab-pane" id="show_one">
 											<label>URL</label>
 											<input type="text" class="url" disabled="disabled" id="show_one_mission" value="/mission/1" />
-											<input type="text" id="mission_id" value="1" />
+											<input type="text" value="1" />
 											<span class="btn send">Выполнить</span>
 										</div>
 										<div class="tab-pane" id="create">
@@ -544,26 +622,8 @@
 <script>
   $(function () {
 
-
-	$('.franchise_id').bind('change keyup', function() {
-		$('#show_one_franchise .url').val('/franchise/'+$(this).val());
-	});
-	
-	$('#update_franchise .id').bind('change keyup', function() {
-		$('#update_franchise .url').val('/franchise/'+$(this).val());
-	});
-
-	$('#delete_franchise .id').bind('change keyup', function() {
-		$('#delete_franchise .url').val('/franchise/'+$(this).val());
-	});
-
-	$('#show_one_point .id').bind('change keyup', function() {
-		$('#show_one_point .url').val('/point/'+$(this).val());
-	});
-
-
-	$('#update_point .id').bind('change keyup', function() {
-		$('#update_point .url').val('/point/'+$(this).val());
+	$('.id').bind('change keyup', function() {
+		$('#'+$(this).attr('data-section')+' .url').val('/'+$(this).attr('data-url')+'/'+$(this).val());
 	});
 
 	$('.latitude_point, .longitude_point, .distance_point').bind('change keyup', function() {
