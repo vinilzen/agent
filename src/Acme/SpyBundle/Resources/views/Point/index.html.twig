@@ -8,9 +8,10 @@
             <tr>
                 <th>Id</th>
                 <th>Title</th>
+                <th>Active</th>
                 <th>Description</th>
-                <th>Logo</th>
-                <th>Coordinates</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -19,9 +20,10 @@
             <tr>
                 <td><a href="{{ path('point_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.title }}</td>
+                <td>{{ entity.active }}</td>
                 <td>{{ entity.description }}</td>
-                <td>{{ entity.logo }}</td>
-                <td>{{ entity.coordinates }}</td>
+                <td>{{ entity.latitude }}</td>
+                <td>{{ entity.longitude }}</td>
                 <td>
                 <ul>
                     <li>
