@@ -4,6 +4,7 @@
 	<title>Bootstrap 101 Template</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/test.css" rel="stylesheet">
 	<link href="/css/bootstrap-responsive.css" rel="stylesheet">
 </head>
 <body>
@@ -392,13 +393,9 @@
 													<label class="control-label">Активность*:</label>
 
 													<div class="controls">
-														<label class="radio inline">
-														  <input type="radio" name="point[active]" class="param" value="1" checked>
+														<label class="checkbox inline my_width">
+														  <input type="checkbox" name="point[active]" class="param" value="1" checked>
 														  Точка активна
-														</label>
-														<label class="radio inline">
-														  <input type="radio" name="point[active]" class="param" value="0">
-														  Не активна
 														</label>
 														<span class="help-inline">point[active]</span>
 													</div>
@@ -479,13 +476,9 @@
 													<label class="control-label">Активность*:</label>
 
 													<div class="controls">
-														<label class="radio inline">
-														  <input type="radio" name="point[active]" class="param" value="1" checked>
+														<label class="checkbox inline my_width">
+														  <input type="checkbox" name="point[active]" class="param" value="1" checked>
 														  Точка активна
-														</label>
-														<label class="radio inline">
-														  <input type="radio" name="point[active]" class="param" value="0">
-														  Не активна
 														</label>
 														<span class="help-inline">point[active]</span>
 													</div>
@@ -659,30 +652,32 @@
 		$('#status, #response').html('');
 
 		$("#"+id+" .param").each(function() {
-		  data[$(this).attr('name')] = $(this).val();
+			if ($(this).attr('type')!='checkbox' || ($(this).attr('type') =='checkbox' && $(this).attr("checked")) ){
+				data[$(this).attr('name')] = $(this).val();
+			}
 		});
 
-		console.log(data);
+		//console.log(data);
 
 		$.ajax({
 
-		  type: $('#'+id+' .method').val(),
-		  url: '/app_dev.php'+$('#'+id+' .url').val(),
-		  data:data
+			type: $('#'+id+' .method').val(),
+			url: '/app_dev.php'+$('#'+id+' .url').val(),
+			data:data
 
 		}).done(function( a,b,c) {
 
-		  console.log( "done: ",a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(c.status);
-		  $('#response').html(c.responseText);
+			console.log( "done: ",a, b,c);
+			$('.progress').hide();
+			$('#status').html(c.status);
+			$('#response').html(c.responseText);
 
 		}).error(function(a,b,c){
 
-		  console.log( "error: ", a, b,c);
-		  $('.progress').hide();
-		  $('#status').html(a.status);
-		  $('#response').html(a.responseText);
+			console.log( "error: ", a, b,c);
+			$('.progress').hide();
+			$('#status').html(a.status);
+			$('#response').html(a.responseText);
 
 		});
     });

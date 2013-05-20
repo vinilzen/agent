@@ -3,12 +3,14 @@
 namespace Acme\SpyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Acme\SpyBundle\Entity\Point;
 use Acme\SpyBundle\Form\PointType;
+use Acme\SpyBundle\Controller\MissionController;
 
 /**
  * Point controller.
@@ -27,12 +29,88 @@ class PointController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('AcmeSpyBundle:Point')->findAll();
 
-        return array(
-            'entities' => $entities,
-        );
+        foreach ($entities as $entity) {
+            $entities_array[] = array(
+                'id'            =>  $entity->getId(),
+                'title'         =>  $entity->getTitle(),
+                'description'   =>  $entity->getDescription(),
+                'active'        =>  $entity->getActive(),
+                'latitude'      =>  $entity->getLatitude(),
+                'longitude'     =>  $entity->getLongitude(),
+                'franchise'     =>  $entity->getFranchise()!=NULL?$entity->getFranchise()->getId():0
+            );
+        }
+
+        $json_string = MissionController::utf_cyr(json_encode($entities_array));
+
+        $response = new Response();
+        $response->setContent($json_string);
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
+        return $response;
+    }
+    /**
+     * Lists The Nearest Points Point entities.
+     *
+     * @Route("/{latitude}x{longitude}/{distance}", name="nearest_point")
+     * @Method("GET")
+     * @Template()
+     */
+    public function nearest_pointAction($latitude, $longitude, $distance)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /*
+         * return array [{id, title, latitude, longitude, distance}, ...]
+         */
+        $results = $em
+                    ->getRepository('AcmeSpyBundle:Point')
+                    ->findTheNearestPoints($latitude, $longitude, $distance);
+
+        
+        if (count($results)){
+            foreach ($results as $point) {
+                $entities_array[] = array(
+                    'id'            =>  $point['id'],
+                    'title'         =>  $point['title'],
+                    'distance'      =>  round($point['distance']),
+                    'latitude'      =>  $point['latitude'],
+                    'longitude'     =>  $point['longitude']
+                );
+            }
+
+            $json_string = MissionController::utf_cyr(json_encode($entities_array));
+       
+        } else {
+
+            $json_string = MissionController::utf_cyr(json_encode('В радиусе '.$distance.'м заведений не обнаружено.'));
+
+        }
+
+
+        $response = new Response();
+        $response->setContent($json_string);
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
+        return $response;
     }
 
     /**
@@ -44,40 +122,46 @@ class PointController extends Controller
      */
     public function createAction(Request $request)
     {
+        $response = new Response();
+
         $entity  = new Point();
         $form = $this->createForm(new PointType(), $entity);
         $form->bind($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
 
-            return $this->redirect($this->generateUrl('point_show', array('id' => $entity->getId())));
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
+
+        } else {
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+
+                $json_string = json_encode($entity->getId());
+                $response->setStatusCode(201); // created
+            } else {
+                $errors = $form->getErrors();
+                $json_string = json_encode(serialize($errors));
+                $response->setStatusCode(400);
+            }
+
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to create a new Point entity.
-     *
-     * @Route("/new", name="point_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Point();
-        $form   = $this->createForm(new PointType(), $entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        $response->setContent($json_string);
+        return $response;
     }
 
     /**
@@ -90,46 +174,40 @@ class PointController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AcmeSpyBundle:Point')->find($id);
 
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Point entity.');
+            $json_string = json_encode('Точка не найдена');
+            $response->setStatusCode(404);
+        } else {
+            $entity_array = array(
+                'id'            =>  $entity->getId(),
+                'title'         =>  $entity->getTitle(),
+                'description'   =>  $entity->getDescription(),
+                'active'        =>  $entity->getActive(),
+                'latitude'   =>  $entity->getLatitude(),
+                'longitude'   =>  $entity->getLongitude(),
+                'franchise'     =>  $entity->getFranchise()!=NULL?$entity->getFranchise()->getId():0
+            );
+
+            $json_string = json_encode($entity_array);
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $json_string = MissionController::utf_cyr($json_string);
 
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to edit an existing Point entity.
-     *
-     * @Route("/{id}/edit", name="point_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('AcmeSpyBundle:Point')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Point entity.');
-        }
-
-        $editForm = $this->createForm(new PointType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+        $response->setContent($json_string);
+        return $response;
     }
 
     /**
@@ -137,34 +215,56 @@ class PointController extends Controller
      *
      * @Route("/{id}", name="point_update")
      * @Method("PUT")
-     * @Template("AcmeSpyBundle:Point:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
+        $response = new Response();
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AcmeSpyBundle:Point')->find($id);
+                    
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Point entity.');
+        } else {
+
+            if (!$entity) {
+                $json_string = MissionController::utf_cyr(json_encode('Точка не найдена'));
+
+                $response->setStatusCode(404);
+                $response->setContent($json_string);
+                
+            } else {
+
+                $editForm = $this->createForm(new PointType(), $entity);
+                $editForm->bind($request);
+
+                if ($editForm->isValid()) {
+
+
+                    $em->persist($entity);
+                    $em->flush();
+                    $json_string = json_encode($entity->getId());
+                } else {
+                    $errors = $form->getErrors();
+                    $json_string = json_encode(serialize($errors));
+                    $response->setStatusCode(400);
+                }
+            }
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new PointType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('point_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        $response->setContent($json_string);
+        return $response;
     }
 
     /**
@@ -175,22 +275,52 @@ class PointController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
+        $response = new Response();
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AcmeSpyBundle:Point')->find($id);
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            
+            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+            $response->setStatusCode(403);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Point entity.');
+        } else {
+
+            $form = $this->createDeleteForm($id);
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $entity = $em->getRepository('AcmeSpyBundle:Point')->find($id);
+
+                if (!$entity) {
+                    $json_string = MissionController::utf_cyr(json_encode('Точка не найдена'));
+
+                    $response->setStatusCode(404);
+                    $response->setContent($json_string);
+                } else {
+                    $em->remove($entity);
+                    $em->flush();
+                    $json_string = $id;
+                }
+
+            } else {
+
+                $errors = $form->getErrors();
+                $json_string = json_encode(serialize($errors));
+                $response->setStatusCode(400);
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('point'));
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        $response->setContent($json_string);
+        return $response;
     }
 
     /**
