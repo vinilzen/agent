@@ -26,7 +26,7 @@
 							<div id="collapseFranchise" class="accordion-body collapse in">
 								<div class="accordion-inner">
 
-									<ul class="nav nav-tabs" id="myTab">
+									<ul class="nav nav-tabs">
 										<li class="active"><a href="#list_franchise">GET LIST</a></li>
 										<li><a href="#show_one_franchise">SHOW ONE</a></li>
 										<li><a href="#create_franchise">CREATE</a></li>
@@ -236,7 +236,7 @@
 							<div id="collapsePoint" class="accordion-body collapse">
 								<div class="accordion-inner">
 
-									<ul class="nav nav-tabs" id="myTab">
+									<ul class="nav nav-tabs">
 										<li class="active"><a href="#get_points">GET LIST</a></li>
 										<li><a href="#get_near_points">GET NEAR POINTS</a></li>
 										<li><a href="#show_one_point">SHOW ONE</a></li>
@@ -272,7 +272,6 @@
 										</div>
 										<div class="tab-pane get_near_points" id="get_near_points">
 
-											
 											<form class="form-horizontal">
 
   												<div class="control-group">
@@ -356,7 +355,6 @@
 											</form>
 										</div>
 										<div class="tab-pane create" id="create_point">
-											<strong>НЕ ГОТОВО</strong>
 											<form class="form-horizontal">
   												<div class="control-group">
 													<label class="control-label">URL:</label>
@@ -380,7 +378,7 @@
 													</div>
 												</div>
 
-  												<div class="control-group">
+												<div class="control-group">
 													<label class="control-label">Описание(время работы)*:</label>
 
 													<div class="controls">
@@ -558,7 +556,7 @@
 							<div id="collapseMission" class="accordion-body collapse">
 								<div class="accordion-inner">
 
-									<ul class="nav nav-tabs" id="myTab">
+									<ul class="nav nav-tabs">
 										<li class="active"><a href="#get_list">GET LIST</a></li>
 										<li><a href="#show_one">SHOW ONE</a></li>
 										<li><a href="#create">CREATE</a></li>
@@ -630,8 +628,8 @@
 	});
 
 
-    $('#myTab a:first').tab('show');
-    $('#myTab a').click(function (e) {
+    $('.nav-tabs a:first').tab('show');
+    $('.nav-tabs a').click(function (e) {
 		e.preventDefault();
 		$(this).tab('show');
 	});
@@ -682,9 +680,202 @@
 		});
     });
 
+  });
+
+// универсальные табы для всех сущностей
+var tabs = new Backbone.Collection([
+  {title:"GET LIST",	name: "get_list",	active: 1},
+  {title:"SHOW ONE",	name: "show_one",	active: 0},
+  {title:"CREATE",		name: "create",		active: 0},
+  {title:"UPDATE",		name: "update",		active: 0},
+  {title:"DELETE",		name: "delete",		active: 0},
+]);
+
+var ControlGroupView = Backbone.View.extend({
+	className: 'control-group',
+	tagName: 'div',
+	template: _.template(	'<label class="control-label"><%= title %>*:</label>'+
+							'<div class="controls">'+
+								'<textarea name="<%= entity %>[<%= param_name %>]" class="param"></textarea>'+ //<% print((required)?"required="required"":""); %>
+								'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+							'</div>'),
+	render:function(){
+		var content = this.template(this.model.toJSON());
+		return this;
+	}
+});
+
+var TabView = Backbone.View.extend({
+	tagName: 'li',
+	events:{
+		'click':'show'
+	},
+	show:function(e){
+		e.preventDefault();
+		//console.log(this.$el.tab('show'));
+		$('a', this.$el).tab('show');
+	},
+	initialize:function(){
+		this.render();
+	},
+	render:function(){
+		this.$el.html('<a href="#'+this.model.get('name')+'_'+this.options.entity_name+'">'+this.model.get('title')+'</a>')
+		if(this.model.get('active')){
+			this.$el.addClass('active');
+		}
+		return this;
+	}
+});
+var TabPane = Backbone.View.extend({
+	className: 'tab-pane',
+	initialize:function(){
+		this.render();
+	},
+	render:function(){
+		this.$el.html(this.model.get('name')+' - '+this.options.entity_name);
+		
+		this.$el.attr('id',this.model.get('name')+'_'+this.options.entity_name);
+		
+		if(this.model.get('active')){
+			this.$el.addClass('active');
+		}
+		return this;
+	}
+});
+
+var TabsView = Backbone.View.extend({
+	className: 'nav nav-tabs',
+	tagName: 'ul',
+	initialize:function(){
+		this.render();
+	},
+	render:function(){
+		console.log(this);
+		var entity_name = this.model.get('entityName').toLowerCase(),
+			THIS = this;
 
 
-  })
+		_.each(tabs.models, function(tab){
+			var tabview = new TabView({model:tab, entity_name:entity_name});
+			THIS.$el.append(tabview.el);
+		});
+		return this;
+	}
+});
+
+var TabsContent = Backbone.View.extend({
+	className: 'tab-content',
+	initialize:function(){
+		this.render();
+	},
+	render:function(){
+		var entity_name = this.model.get('entityName').toLowerCase(),
+			THIS = this;
+
+		_.each(tabs.models, function(tab){
+			var tabview = new TabPane({model:tab, entity_name:entity_name});
+			THIS.$el.append(tabview.el);
+		});
+
+		return this;
+	}
+});
+
+var ControlGroupModel = Backbone.Model.extend({
+	defaults: {
+		"required":1,
+		"entity":"point",
+		"param_name":"title",
+		"description":"Описание",
+	}
+});
+
+var EntityView = Backbone.View.extend({
+	className:'accordion-group',
+	template:_.template(	'<div class="accordion-heading">'+
+								'<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse<%= entityName %>">'+
+								'<%= name %>'+ //<span class="label label-success">Готово</span>
+								'</a>'+
+							'</div>'+
+							'<div id="collapse<%= entityName %>" class="accordion-body collapse">'+
+								'<div class="accordion-inner"></div>'+
+							'</div>'),
+	initialize:function(){	
+		this.render();
+	},
+	render:function(){
+
+		var content = this.template(this.model.toJSON());
+
+		this.$el.html(content);
+		this.renderTabs();
+		
+		return this;
+	},
+
+	renderTabs:function(){
+		
+		var tabsview = new TabsView({model:this.model});
+		var tabscontent = new TabsContent({model:this.model});
+
+		$('.accordion-inner', this.$el)
+				.html(tabsview.el)
+				.append(tabscontent.el);
+
+		//add Tabs + TabsContent
+	}
+
+})
+
+
+var Entity = Backbone.Model.extend({
+	defaults:{
+		name:'[неуказано]',
+		type:'string',
+		required:0
+	},
+	initialize:function(){
+		this.view = new EntityView({model:this});
+		$('.accordion').append(this.view.el);
+	}
+});
+
+var Entities = Backbone.Collection.extend({
+	model:Entity,
+	initialize:function(){
+
+	},
+	reset:function(models){
+		if (models.length>0){
+			for (var i=0; models.length>i; i++){
+				this.add(new Entity(models[i]));
+			}
+		}
+	}
+});
+
+var collection;
+
+$(function () {
+	collection = new Entities([
+		{name: "Сеть", entityName: "Franchise1",	parameters:[
+													{title:'Лого',name:'logo',type:'string',required:0},
+													{title:'Бренд',name:'brand',type:'string',required:1},
+													{title:'Индустрия',name:'industry',type:'string',required:1}
+												]
+		},
+		{name: "Точки", entityName: "Point1",	parameters:[
+													{title:'Название',name:'title',type:'string',required:1},
+													{title:'Описание(время работы)',name:'description',type:'text',required:0},
+													{title:'Активность',name:'active',type:'checkbox',required:0},
+													{title:'Широта',name:'latitude',type:'string',required:1},
+													{title:'Долгота',name:'longitude',type:'string',required:1},
+													{title:'Сеть',name:'franchise',type:'string',required:1}
+												]
+		},
+	]);
+});
+
 </script>
 </body>
 </html>
