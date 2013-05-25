@@ -387,7 +387,7 @@
 													</div>
 												</div>
 
-  												<div class="control-group">
+												<div class="control-group">
 													<label class="control-label">Активность*:</label>
 
 													<div class="controls">
@@ -689,21 +689,63 @@ var tabs = new Backbone.Collection([
   {title:"CREATE",		name: "create",		active: 0},
   {title:"UPDATE",		name: "update",		active: 0},
   {title:"DELETE",		name: "delete",		active: 0},
-]);
+]),
+groups = new Backbone.Collection();
+groups.comparator = function(group) {
+  return group.get("sort");
+};
 
 var ControlGroupView = Backbone.View.extend({
 	className: 'control-group',
 	tagName: 'div',
-	template: _.template(	'<label class="control-label"><%= title %>*:</label>'+
+	template_text: _.template('<label class="control-label"><%= title %><% print((required)?"*":""); %>:</label>'+
 							'<div class="controls">'+
-								'<textarea name="<%= entity %>[<%= param_name %>]" class="param"></textarea>'+ //<% print((required)?"required="required"":""); %>
+								'<textarea name="<%= entity %>[<%= param_name %>]" class="param"><%= value %></textarea>'+
 								'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
 							'</div>'),
+
+	template_string: _.template('<label class="control-label"><%= title %><% print((required)?"*":""); %>:</label>'+
+				'<div class="controls">'+
+					'<input type="text" value="<%= value %>" name="<%= entity %>[<%= param_name %>]" class="param" <% print((required)?"required":""); %> <% print((disabled)?"disabled":""); %> />'+ 
+					'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+				'</div>'),
+
+	template_checkbox: _.template(	'<label class="control-label"><%= title %>*:</label>'+
+							'<div class="controls">'+
+								'<label class="checkbox inline my_width">'+
+								'<input type="checkbox" name="<%= entity %>[<%= param_name %>]" class="param" value="1" checked>'+
+								'Точка активна'+
+								'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+							'</div>'),
+
+	template_submit: _.template(	'<div class="controls">'+
+										'<span class="btn send" data-section="<%= param_name %>_<%= entity %>">Выполнить</span>'+
+									'</div>'),
+
+	initialize:function(){
+		this.render();
+	},
 	render:function(){
-		var content = this.template(this.model.toJSON());
+		var content = this['template_'+this.model.get('type')](this.model.toJSON());
+		this.$el.html(content);
 		return this;
 	}
 });
+
+var ControlGroupModel = Backbone.Model.extend({
+	defaults: {
+		title:'',
+		value:'',
+		param_name:'',
+		required:false,
+		disabled:false,
+		description:"Описание",
+	},
+	initialize:function(){
+		this.view = new ControlGroupView({model:this});
+	}
+});
+
 
 var TabView = Backbone.View.extend({
 	tagName: 'li',
@@ -732,14 +774,59 @@ var TabPane = Backbone.View.extend({
 		this.render();
 	},
 	render:function(){
-		this.$el.html(this.model.get('name')+' - '+this.options.entity_name);
+
+		var THIS = this;
+
+		this.$el.html('<form class="form-horizontal">'+'</form>'); //this.model.get('name')+' - '+this.options.entity_name
 		
 		this.$el.attr('id',this.model.get('name')+'_'+this.options.entity_name);
 		
 		if(this.model.get('active')){
 			this.$el.addClass('active');
 		}
+
+		groups.reset([	new ControlGroupModel({
+							type:'string',
+							value:this.options.entity_name,
+							disabled:true,
+							title:'URL',
+							param_name:'url',
+							entity:this.options.entity_name,
+							sort:11
+						}), new ControlGroupModel({
+							type:'string',
+							value:'GET',
+							disabled:true,
+							title:'METHOD',
+							param_name:'method',
+							entity:this.options.entity_name,
+							sort:2
+						}), new ControlGroupModel({
+							type:'submit',
+							entity: this.options.entity_name,
+							sort:99
+						})
+					]);
+
+
+		if (this[this.model.get('name')]){
+			this[this.model.get('name')]();
+		} 
+
+		groups.each(function(control_group){
+			$('form', THIS.$el).append(control_group.view.el);
+		})
+
 		return this;
+	},
+	get_list:function(){
+		
+	},
+	show_one:function(){
+		console.log('show_one');
+	},
+	create:function(){
+		console.log('create');
 	}
 });
 
@@ -750,10 +837,9 @@ var TabsView = Backbone.View.extend({
 		this.render();
 	},
 	render:function(){
-		console.log(this);
+
 		var entity_name = this.model.get('entityName').toLowerCase(),
 			THIS = this;
-
 
 		_.each(tabs.models, function(tab){
 			var tabview = new TabView({model:tab, entity_name:entity_name});
@@ -773,22 +859,14 @@ var TabsContent = Backbone.View.extend({
 			THIS = this;
 
 		_.each(tabs.models, function(tab){
-			var tabview = new TabPane({model:tab, entity_name:entity_name});
-			THIS.$el.append(tabview.el);
+			var tabpane = new TabPane({model:tab, entity_name:entity_name});
+			THIS.$el.append(tabpane.el);
 		});
 
 		return this;
 	}
 });
 
-var ControlGroupModel = Backbone.Model.extend({
-	defaults: {
-		"required":1,
-		"entity":"point",
-		"param_name":"title",
-		"description":"Описание",
-	}
-});
 
 var EntityView = Backbone.View.extend({
 	className:'accordion-group',
