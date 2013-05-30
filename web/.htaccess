@@ -8,3 +8,5 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ app.php [QSA,L]
 </IfModule>
+AddDefaultCharset utf-8
+AddCharset utf-8 .html .css .js .json
