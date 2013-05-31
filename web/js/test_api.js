@@ -124,7 +124,10 @@ var ControlGroupView = Backbone.View.extend({
 			$('.param', this.$el).addClass('id');
 		}
 		if (this.model.get('param_name') == 'url'){
-			$('.param', this.$el).addClass('url');
+			$('.param', this.$el).addClass('url').removeClass('param');
+		}
+		if (this.model.get('param_name') == 'method'){
+			$('.param', this.$el).removeClass('param');
 		}
 		return this;
 	},
@@ -133,10 +136,11 @@ var ControlGroupView = Backbone.View.extend({
 		$('#'+this.model.get('name')+'_'+this.model.get('entity')+' .url').val('/'+this.model.get('entity')+'/'+$('.id', this.$el).val());
 	},
     send:function(){
-        console.log('send request');
 
-        var id = $(this).attr('data-section'),
+        var id = this.model.get('name')+'_'+this.model.get('entity'), //$(this).attr('data-section'),
             data = {};
+
+        //console.log('send request', $('#'+id+' .url').val());
 
         $('.progress').show();
         $('#status, #response').html('');
@@ -147,7 +151,7 @@ var ControlGroupView = Backbone.View.extend({
             }
         });
 
-        //console.log(data);
+        console.log(data);
 
         $.ajax({
 
@@ -303,6 +307,7 @@ var TabPane = Backbone.View.extend({
 					]);
 	},
 	create:function(){
+
 		groups.add([	new ControlGroupModel({
 							type:'string',
 							value:'POST',
@@ -323,6 +328,23 @@ var TabPane = Backbone.View.extend({
 							sort:1
 						})
 					]);
+
+		if (this.options.parameters && this.options.parameters.length > 0) {
+			for (var i=0; i<this.options.parameters.length; i++){
+				groups.add([
+					new ControlGroupModel({
+						type:this.options.parameters[i]['type'],
+						value:'',
+						disabled:false,
+						title:this.options.parameters[i]['title'],
+						param_name:this.options.parameters[i]['name'],
+						name:this.model.get('name'),
+						entity:this.options.entity_name,
+						sort:2
+					})
+				]);
+			}
+		}
 	},
 	update:function(){
 		groups.add([	new ControlGroupModel({
@@ -345,6 +367,23 @@ var TabPane = Backbone.View.extend({
 							sort:1
 						})
 					]);
+
+		if (this.options.parameters && this.options.parameters.length > 0) {
+			for (var i=0; i<this.options.parameters.length; i++){
+				groups.add([
+					new ControlGroupModel({
+						type:this.options.parameters[i]['type'],
+						value:'',
+						disabled:false,
+						title:this.options.parameters[i]['title'],
+						param_name:this.options.parameters[i]['name'],
+						name:this.model.get('name'),
+						entity:this.options.entity_name,
+						sort:2
+					})
+				]);
+			}
+		}
 	},
 	delete:function(){
 		groups.add([	new ControlGroupModel({
@@ -403,11 +442,12 @@ var TabsContent = Backbone.View.extend({
 		this.render();
 	},
 	render:function(){
+
 		var entity_name = this.model.get('entityName').toLowerCase(),
 			THIS = this;
-
+		
 		_.each(tabs.models, function(tab){
-			var tabpane = new TabPane({model:tab, entity_name:entity_name});
+			var tabpane = new TabPane({model:tab, entity_name:entity_name, parameters:THIS.model.get('parameters')});
 			THIS.$el.append(tabpane.el);
 		});
 
@@ -468,8 +508,8 @@ var Entity = Backbone.Model.extend({
 
 var Entities = Backbone.Collection.extend({
 	model:Entity,
-	initialize:function(){
-
+	initialize:function(models){
+		//console.log(models); models = array models
 	},
 	reset:function(models){
 		if (models.length>0){
@@ -480,10 +520,10 @@ var Entities = Backbone.Collection.extend({
 	}
 });
 
-var collection;
+var collection_entities;
 
 $(function () {
-	collection = new Entities([
+	collection_entities = new Entities([
 		{name: "Сеть", entityName: "Franchise1",	parameters:[
 													{title:'Лого',name:'logo',type:'string',required:0},
 													{title:'Бренд',name:'brand',type:'string',required:1},

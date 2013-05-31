@@ -4,3 +4,10 @@
 .controls .checkbox.inline.my_width {
 	width:200px;
 }
+.nav-tabs > li > a {
+	padding:6px 6px 4px 6px;
+	line-height: 10px;
+	-webkit-border-radius: 2px 2px 0 0;
+	-moz-border-radius: 2px 2px 0 0;
+	border-radius: 2px 2px 0 0;
+}
