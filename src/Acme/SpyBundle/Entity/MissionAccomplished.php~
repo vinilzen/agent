@@ -22,11 +22,18 @@ class MissionAccomplished
     private $id;
 
     /**
-     * @var string
+     * @var decimal
      *
-     * @ORM\Column(name="coordinates", type="string")
+     * @ORM\Column(name="latitude", type="text", length=9)
      */
-    private $coordinates;
+    private $latitude;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="longitude", type="text", length=9)
+     */
+    private $longitude;
 
     /**
      * @var string
@@ -45,17 +52,9 @@ class MissionAccomplished
     /**
      * @var string
      *
-     * @ORM\Column(name="form", type="string")
-     */
-    private $form;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="files", type="text")
      */
     private $files;
-
 
     /**
      * Get id

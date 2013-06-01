@@ -28,6 +28,7 @@ class PointController extends Controller
      */
     public function indexAction()
     {
+        $entities_array = array();
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('AcmeSpyBundle:Point')->findAll();
 
@@ -196,8 +197,8 @@ class PointController extends Controller
                 'title'         =>  $entity->getTitle(),
                 'description'   =>  $entity->getDescription(),
                 'active'        =>  $entity->getActive(),
-                'latitude'   =>  $entity->getLatitude(),
-                'longitude'   =>  $entity->getLongitude(),
+                'latitude'      =>  $entity->getLatitude(),
+                'longitude'     =>  $entity->getLongitude(),
                 'franchise'     =>  $entity->getFranchise()!=NULL?$entity->getFranchise()->getId():0
             );
 

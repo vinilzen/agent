@@ -102,11 +102,18 @@ var ControlGroupView = Backbone.View.extend({
 					'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
 				'</div>'),
 
+	template_time: _.template('<label class="control-label"><%= title %><% print((required)?"*":""); %>:</label>'+
+				'<div class="controls">'+
+					'<input type="text" value="00" name="<%= entity %>[<%= param_name %>][hour]" class="time hour input-mini param" />:'+
+					'<input type="text" value="00" name="<%= entity %>[<%= param_name %>][minute]" class="time minute input-mini param" />'+
+					'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+				'</div>'),
+
 	template_checkbox: _.template(	'<label class="control-label"><%= title %>*:</label>'+
 							'<div class="controls">'+
 								'<label class="checkbox inline my_width">'+
 								'<input type="checkbox" name="<%= entity %>[<%= param_name %>]" class="param" value="1" checked>'+
-								'Точка активна'+
+								'да/нет'+
 								'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
 							'</div>'),
 
@@ -121,13 +128,16 @@ var ControlGroupView = Backbone.View.extend({
 		var content = this['template_'+this.model.get('type')](this.model.toJSON());
 		this.$el.html(content);
 		if (this.model.get('param_name') == 'id'){
-			$('.param', this.$el).addClass('id');
+			$('.param', this.$el).addClass('id').removeClass('param');
 		}
 		if (this.model.get('param_name') == 'url'){
+			if (this.model.get('url')){
+				$('.param', this.$el).val(this.model.get('url'));
+			}
 			$('.param', this.$el).addClass('url').removeClass('param');
 		}
 		if (this.model.get('param_name') == 'method'){
-			$('.param', this.$el).removeClass('param');
+			$('.param', this.$el).addClass('method').removeClass('param');
 		}
 		return this;
 	},
@@ -140,18 +150,31 @@ var ControlGroupView = Backbone.View.extend({
         var id = this.model.get('name')+'_'+this.model.get('entity'), //$(this).attr('data-section'),
             data = {};
 
-        //console.log('send request', $('#'+id+' .url').val());
+        console.log(id);
 
         $('.progress').show();
         $('#status, #response').html('');
 
-        $("#"+id+" .param").each(function() {
-            if ($(this).attr('type')!='checkbox' || ($(this).attr('type') =='checkbox' && $(this).attr("checked")) ){
-                data[$(this).attr('name')] = $(this).val();
-            }
-        });
+        if (this.model.get('name') != 'delete') {
+	        $("#"+id+" .param").each(function() {
+                if ($(this).hasClass('time')){
 
-        console.log(data);
+                    if ($(this).hasClass('hour')){
+                        data[$(this).attr('name')] = parseInt($(this).val());
+                    }
+                    if ($(this).hasClass('minute')){
+                        data[$(this).attr('name')] = parseInt($(this).val());
+                    }
+
+                } else {
+
+                    if ($(this).attr('type')!='checkbox' || ($(this).attr('type') =='checkbox' && $(this).attr("checked")) ){
+                        data[$(this).attr('name')] = $(this).val();
+                    }
+
+                }
+	        });
+	    }
 
         $.ajax({
 
@@ -166,14 +189,14 @@ var ControlGroupView = Backbone.View.extend({
                 $('#status').html(c.status);
                 $('#response').html(c.responseText);
 
-            }).error(function(a,b,c){
+        }).error(function(a,b,c){
 
-                console.log( "error: ", a, b,c);
-                $('.progress').hide();
-                $('#status').html(a.status);
-                $('#response').html(a.responseText);
+            console.log( "error: ", a, b,c);
+            $('.progress').hide();
+            $('#status').html(a.status);
+            $('#response').html(a.responseText);
 
-            });
+        });
     }
 });
 
@@ -266,7 +289,7 @@ var TabPane = Backbone.View.extend({
 							sort:2
 						}), new ControlGroupModel({
 							type:'string',
-							value:'/'+this.options.entity_name+'/',
+							value:'/'+this.options.url+'/',
 							disabled:true,
 							title:'URL',
 							param_name:'url',
@@ -296,7 +319,7 @@ var TabPane = Backbone.View.extend({
 							sort:3
 						}), new ControlGroupModel({
 							type:'string',
-							value:'/'+this.options.entity_name+'/1',
+							value:'/'+this.options.url+'/1',
 							disabled:true,
 							title:'URL',
 							param_name:'url',
@@ -319,7 +342,7 @@ var TabPane = Backbone.View.extend({
 							sort:2
 						}), new ControlGroupModel({
 							type:'string',
-							value:'/'+this.options.entity_name+'/',
+							value:'/'+this.options.url+'/',
 							disabled:true,
 							title:'URL',
 							param_name:'url',
@@ -358,7 +381,15 @@ var TabPane = Backbone.View.extend({
 							sort:2
 						}), new ControlGroupModel({
 							type:'string',
-							value:'/'+this.options.entity_name+'/',
+							value:'1',
+							title:'ID',
+							param_name:'id',
+							name:this.model.get('name'),
+							entity:this.options.entity_name,
+							sort:98
+						}), new ControlGroupModel({
+							type:'string',
+							value:'/'+this.options.url+'/1',
 							disabled:true,
 							title:'URL',
 							param_name:'url',
@@ -405,7 +436,7 @@ var TabPane = Backbone.View.extend({
 							sort:3
 						}), new ControlGroupModel({
 							type:'string',
-							value:'/'+this.options.entity_name+'/1',
+							value:'/'+this.options.url+'/1',
 							disabled:true,
 							title:'URL',
 							param_name:'url',
@@ -426,7 +457,8 @@ var TabsView = Backbone.View.extend({
 	render:function(){
 
 		var entity_name = this.model.get('entityName').toLowerCase(),
-			THIS = this;
+			THIS = this,
+			url = this.model.get('url');
 
 		_.each(tabs.models, function(tab){
 			var tabview = new TabView({model:tab, entity_name:entity_name});
@@ -447,7 +479,13 @@ var TabsContent = Backbone.View.extend({
 			THIS = this;
 		
 		_.each(tabs.models, function(tab){
-			var tabpane = new TabPane({model:tab, entity_name:entity_name, parameters:THIS.model.get('parameters')});
+			var tabpane = new TabPane({
+							model:tab, 
+							entity_name:entity_name, 
+							url:THIS.model.get('url')?THIS.model.get('url'):entity_name, 
+							parameters:THIS.model.get('parameters')
+						});
+			
 			THIS.$el.append(tabpane.el);
 		});
 
@@ -524,7 +562,30 @@ var collection_entities;
 
 $(function () {
 	collection_entities = new Entities([
-		{name: "Сеть", entityName: "Franchise1",	parameters:[
+		{name: "Задание", entityName: "Mission",	parameters:[
+													{title:'Время выполнения', name:'runtime',type:'time',required:1},
+													{title:'Активность', name:'active',type:'checkbox',required:0},
+													{title:'Необходима покупка', name:'needBuy',type:'checkbox',required:0},
+													{title:'Баллы за задание', name:'costs',type:'string',required:1},
+													{title:'Иконки', name:'icons',type:'string',required:0},
+													{title:'Описание', name:'description',type:'text',required:0},
+													{title:'ID типа миссии', name:'missionType',type:'string',required:1},
+													{title:'ID точки', name:'point',type:'string',required:1}
+												]
+		},
+		{name: "Выполненное задание", entityName: "MissionAccomplished",	parameters:[
+													{title:'Широта',name:'latitude',type:'string',required:1},
+													{title:'Долгота',name:'longitude',type:'string',required:1},
+													{title:'Демографическая информация',name:'info',type:'text',required:1},
+													{title:'Ссылка (имя файла) загруженных фотографий',name:'files',type:'string',required:0},
+													{title:'Статус агента',name:'info',type:'string',required:1}
+												], url:'complet'
+		},
+		{name: "Тип вопроса", entityName: "QuestionType",	parameters:[
+													{title:'Название',name:'title',type:'string',required:1}
+												]
+		}
+		/*{name: "Сеть", entityName: "Franchise1",	parameters:[
 													{title:'Лого',name:'logo',type:'string',required:0},
 													{title:'Бренд',name:'brand',type:'string',required:1},
 													{title:'Индустрия',name:'industry',type:'string',required:1}
@@ -538,6 +599,6 @@ $(function () {
 													{title:'Долгота',name:'longitude',type:'string',required:1},
 													{title:'Сеть',name:'franchise',type:'string',required:1}
 												]
-		}
+		}*/
 	]);
 });

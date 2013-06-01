@@ -3,6 +3,7 @@
 namespace Acme\SpyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,13 +27,36 @@ class MissionAccomplishedController extends Controller
      */
     public function indexAction()
     {
+        $entities_array = array();
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('AcmeSpyBundle:MissionAccomplished')->findAll();
 
-        return array(
-            'entities' => $entities,
-        );
+        foreach ($entities as $entity) {
+            $entities_array[] = array(
+                'id'            =>  $entity->getId(),
+                'latitude'      =>  $entity->getLatitude(),
+                'longitude'     =>  $entity->getLongitude(),
+                'info'          =>  $entity->getInfo(),
+                'status'        =>  $entity->getStatus(),
+                'files'         =>  $entity->getFiles()
+            );
+        }
+
+        $json_string = MissionController::utf_cyr(json_encode($entities_array));
+
+        $response = new Response();
+        $response->setContent($json_string);
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+
+        return $response;
     }
 
     /**

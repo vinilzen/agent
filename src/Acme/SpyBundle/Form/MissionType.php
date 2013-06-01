@@ -13,9 +13,9 @@ class MissionType extends AbstractType
         $builder
             ->add('runtime')
             ->add('needBuy')
+            ->add('active')
             ->add('costs')
             ->add('icons')
-            ->add('form')
             ->add('description')
             ->add('point', 'entity', array(
                                               'label' => 'Точки',
@@ -33,12 +33,13 @@ class MissionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\SpyBundle\Entity\Mission'
+            'data_class' => 'Acme\SpyBundle\Entity\Mission',
+            'csrf_protection' => false
         ));
     }
 
     public function getName()
     {
-        return 'acme_spybundle_missiontype';
+        return 'mission';
     }
 }

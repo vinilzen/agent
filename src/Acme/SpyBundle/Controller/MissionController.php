@@ -118,21 +118,34 @@ class MissionController extends Controller
      */
     public function createAction(Request $request)
     {
+        $response = new Response();
         $entity  = new Mission();
         $form = $this->createForm(new MissionType(), $entity);
         $form->bind($request);
 
         if ($form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
             $json_string = json_encode($entity->getId());
+
         } else {
-            $json_string = json_encode('Неверный запрос');
+
+            $errors = array();
+            foreach ($form->getErrors() as $key => $error) {
+                $template = $error->getMessageTemplate();
+                $parameters = $error->getMessageParameters();
+                foreach($parameters as $var => $value){
+                    $template = str_replace($var, $value, $template);
+                }
+                $errors[$key] = $template;
+            }
+
+            $json_string = json_encode($errors);
+            $response->setStatusCode(400);
         }
 
-        $response = new Response();
         $response->setContent($json_string);
         $response->headers->set('Content-Type', 'application/json; charset=utf-8');
         $response->setCache(array(
@@ -297,7 +310,17 @@ class MissionController extends Controller
 
             $json_string = json_encode($entity->getId());
         } else {
-            $json_string = json_encode('Неверный запрос');
+            $errors = array();
+            foreach ($form->getErrors() as $key => $error) {
+                $template = $error->getMessageTemplate();
+                $parameters = $error->getMessageParameters();
+                foreach($parameters as $var => $value){
+                    $template = str_replace($var, $value, $template);
+                }
+                $errors[$key] = $template;
+            }
+
+            $json_string = json_encode($errors);
             $response->setStatusCode(400);
         }
 
@@ -346,7 +369,19 @@ class MissionController extends Controller
 
             $json_string = json_encode($id);
         } else {
-            $json_string = json_encode('Неверный запрос');
+            $response->setStatusCode(400);
+
+            $errors = array();
+            foreach ($form->getErrors() as $key => $error) {
+                $template = $error->getMessageTemplate();
+                $parameters = $error->getMessageParameters();
+                foreach($parameters as $var => $value){
+                    $template = str_replace($var, $value, $template);
+                }
+                $errors[$key] = $template;
+            }
+
+            $json_string = json_encode($errors[0]);
         }
 
         $response->setContent($json_string);
@@ -363,7 +398,7 @@ class MissionController extends Controller
      */
     private function createDeleteForm($id)
     {
-        return $this->createFormBuilder(array('id' => $id))
+        return $this->createFormBuilder(array('id' => $id), array('csrf_protection' => false))
             ->add('id', 'hidden')
             ->getForm()
         ;

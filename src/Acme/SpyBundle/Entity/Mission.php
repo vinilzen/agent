@@ -341,4 +341,27 @@ class Mission
         //die('xxx');
         return $this;
     }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Mission
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 }

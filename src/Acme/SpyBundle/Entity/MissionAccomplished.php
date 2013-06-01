@@ -22,11 +22,18 @@ class MissionAccomplished
     private $id;
 
     /**
-     * @var string
+     * @var decimal
      *
-     * @ORM\Column(name="coordinates", type="string")
+     * @ORM\Column(name="latitude", type="text", length=9)
      */
-    private $coordinates;
+    private $latitude;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="longitude", type="text", length=9)
+     */
+    private $longitude;
 
     /**
      * @var string
@@ -45,17 +52,9 @@ class MissionAccomplished
     /**
      * @var string
      *
-     * @ORM\Column(name="form", type="string")
-     */
-    private $form;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="files", type="text")
      */
     private $files;
-
 
     /**
      * Get id
@@ -65,29 +64,6 @@ class MissionAccomplished
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set coordinates
-     *
-     * @param string $coordinates
-     * @return MissionAccomplished
-     */
-    public function setCoordinates($coordinates)
-    {
-        $this->coordinates = $coordinates;
-    
-        return $this;
-    }
-
-    /**
-     * Get coordinates
-     *
-     * @return string 
-     */
-    public function getCoordinates()
-    {
-        return $this->coordinates;
     }
 
     /**
@@ -136,28 +112,6 @@ class MissionAccomplished
         return $this->status;
     }
 
-    /**
-     * Set form
-     *
-     * @param string $form
-     * @return MissionAccomplished
-     */
-    public function setForm($form)
-    {
-        $this->form = $form;
-    
-        return $this;
-    }
-
-    /**
-     * Get form
-     *
-     * @return string 
-     */
-    public function getForm()
-    {
-        return $this->form;
-    }
 
     /**
      * Set files
@@ -180,5 +134,51 @@ class MissionAccomplished
     public function getFiles()
     {
         return $this->files;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param string $latitude
+     * @return MissionAccomplished
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return string 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param string $longitude
+     * @return MissionAccomplished
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return string 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
     }
 }

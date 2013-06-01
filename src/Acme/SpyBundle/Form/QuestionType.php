@@ -21,12 +21,13 @@ class QuestionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\SpyBundle\Entity\Question'
+            'data_class' => 'Acme\SpyBundle\Entity\Question',
+            'csrf_protection' => false
         ));
     }
 
     public function getName()
     {
-        return 'acme_spybundle_questiontype';
+        return 'questiontype';
     }
 }
