@@ -92,29 +92,32 @@ var ControlGroupView = Backbone.View.extend({
 	},
 	template_text: _.template('<label class="control-label"><%= title %><% print((required)?"*":""); %>:</label>'+
 							'<div class="controls">'+
-								'<textarea name="<%= entity %>[<%= param_name %>]" class="param"><%= value %></textarea>'+
-								'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+								'<textarea name="<%= url %>[<%= param_name %>]" class="param"><%= value %></textarea>'+
+								'<span class="help-inline"><%= url %>[<%= param_name %>]</span>'+
 							'</div>'),
 
 	template_string: _.template('<label class="control-label"><%= title %><% print((required)?"*":""); %>:</label>'+
 				'<div class="controls">'+
-					'<input type="text" value="<%= value %>" name="<%= entity %>[<%= param_name %>]" class="param" <% print((required)?"required":""); %> <% print((disabled)?"disabled":""); %> />'+ 
-					'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+					'<input type="text" value="<%= value %>" name="<%= url %>[<%= param_name %>]" '+
+										'class="param" '+
+										'<% print((required)?"required":""); %> '+
+										'<% print((disabled)?"disabled":""); %> />'+ 
+					'<span class="help-inline"><%= url %>[<%= param_name %>]</span>'+
 				'</div>'),
 
 	template_time: _.template('<label class="control-label"><%= title %><% print((required)?"*":""); %>:</label>'+
 				'<div class="controls">'+
-					'<input type="text" value="00" name="<%= entity %>[<%= param_name %>][hour]" class="time hour input-mini param" />:'+
-					'<input type="text" value="00" name="<%= entity %>[<%= param_name %>][minute]" class="time minute input-mini param" />'+
-					'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+					'<input type="text" value="00" name="<%= url %>[<%= param_name %>][hour]" class="time hour input-mini param" />:'+
+					'<input type="text" value="00" name="<%= url %>[<%= param_name %>][minute]" class="time minute input-mini param" />'+
+					'<span class="help-inline"><%= url %>[<%= param_name %>]</span>'+
 				'</div>'),
 
 	template_checkbox: _.template(	'<label class="control-label"><%= title %>*:</label>'+
 							'<div class="controls">'+
 								'<label class="checkbox inline my_width">'+
-								'<input type="checkbox" name="<%= entity %>[<%= param_name %>]" class="param" value="1" checked>'+
+								'<input type="checkbox" name="<%= url %>[<%= param_name %>]" class="param" value="1" checked>'+
 								'да/нет'+
-								'<span class="help-inline"><%= entity %>[<%= param_name %>]</span>'+
+								'<span class="help-inline"><%= url %>[<%= param_name %>]</span>'+
 							'</div>'),
 
 	template_submit: _.template(	'<div class="controls">'+
@@ -125,15 +128,14 @@ var ControlGroupView = Backbone.View.extend({
 		this.render();
 	},
 	render:function(){
+
 		var content = this['template_'+this.model.get('type')](this.model.toJSON());
+
 		this.$el.html(content);
 		if (this.model.get('param_name') == 'id'){
 			$('.param', this.$el).addClass('id').removeClass('param');
 		}
 		if (this.model.get('param_name') == 'url'){
-			if (this.model.get('url')){
-				$('.param', this.$el).val(this.model.get('url'));
-			}
 			$('.param', this.$el).addClass('url').removeClass('param');
 		}
 		if (this.model.get('param_name') == 'method'){
@@ -142,8 +144,11 @@ var ControlGroupView = Backbone.View.extend({
 		return this;
 	},
 	change_url:function(){
+
+		var url = this.model.get('url')?this.model.get('url'):this.model.get('entity');
 		
-		$('#'+this.model.get('name')+'_'+this.model.get('entity')+' .url').val('/'+this.model.get('entity')+'/'+$('.id', this.$el).val());
+		$('#'+this.model.get('name')+'_'+this.model.get('entity')+' .url')
+			.val('/'+url+'/'+$('.id', this.$el).val());
 	},
     send:function(){
 
@@ -279,6 +284,7 @@ var TabPane = Backbone.View.extend({
 	get_list:function(){
 		
 		groups.add([	new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'GET',
 							disabled:true,
@@ -288,6 +294,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:2
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'/'+this.options.url+'/',
 							disabled:true,
@@ -301,6 +308,7 @@ var TabPane = Backbone.View.extend({
 	},
 	show_one:function(){
 		groups.add([	new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'GET',
 							disabled:true,
@@ -310,6 +318,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:2
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'1',
 							title:'ID',
@@ -318,6 +327,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:3
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'/'+this.options.url+'/1',
 							disabled:true,
@@ -332,6 +342,7 @@ var TabPane = Backbone.View.extend({
 	create:function(){
 
 		groups.add([	new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'POST',
 							disabled:true,
@@ -341,6 +352,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:2
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'/'+this.options.url+'/',
 							disabled:true,
@@ -356,6 +368,7 @@ var TabPane = Backbone.View.extend({
 			for (var i=0; i<this.options.parameters.length; i++){
 				groups.add([
 					new ControlGroupModel({
+						url:this.options.url?this.options.url:this.options.entity_name,
 						type:this.options.parameters[i]['type'],
 						value:'',
 						disabled:false,
@@ -371,6 +384,7 @@ var TabPane = Backbone.View.extend({
 	},
 	update:function(){
 		groups.add([	new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'PUT',
 							disabled:true,
@@ -380,6 +394,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:2
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'1',
 							title:'ID',
@@ -388,6 +403,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:98
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'/'+this.options.url+'/1',
 							disabled:true,
@@ -403,6 +419,7 @@ var TabPane = Backbone.View.extend({
 			for (var i=0; i<this.options.parameters.length; i++){
 				groups.add([
 					new ControlGroupModel({
+						url:this.options.url?this.options.url:this.options.entity_name,
 						type:this.options.parameters[i]['type'],
 						value:'',
 						disabled:false,
@@ -418,6 +435,7 @@ var TabPane = Backbone.View.extend({
 	},
 	delete:function(){
 		groups.add([	new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'DELETE',
 							disabled:true,
@@ -427,6 +445,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:2
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'1',
 							title:'ID',
@@ -435,6 +454,7 @@ var TabPane = Backbone.View.extend({
 							entity:this.options.entity_name,
 							sort:3
 						}), new ControlGroupModel({
+							url:this.options.url?this.options.url:this.options.entity_name,
 							type:'string',
 							value:'/'+this.options.url+'/1',
 							disabled:true,
@@ -525,8 +545,6 @@ var EntityView = Backbone.View.extend({
 		$('.accordion-inner', this.$el)
 				.html(tabsview.el)
 				.append(tabscontent.el);
-
-		//add Tabs + TabsContent
 	}
 
 });
@@ -578,7 +596,7 @@ $(function () {
 													{title:'Долгота',name:'longitude',type:'string',required:1},
 													{title:'Демографическая информация',name:'info',type:'text',required:1},
 													{title:'Ссылка (имя файла) загруженных фотографий',name:'files',type:'string',required:0},
-													{title:'Статус агента',name:'info',type:'string',required:1}
+													{title:'Статус агента',name:'status',type:'string',required:1}
 												], url:'complet'
 		},
 		{name: "Тип вопроса", entityName: "QuestionType",	parameters:[

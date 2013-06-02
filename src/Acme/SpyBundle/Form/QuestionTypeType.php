@@ -6,29 +6,25 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MissionAccomplishedType extends AbstractType
+class QuestionTypeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('longitude')
-            ->add('latitude')
-            ->add('info')
-            ->add('status')
-            ->add('files')
+            ->add('title')
         ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\SpyBundle\Entity\MissionAccomplished',
+            'data_class' => 'Acme\SpyBundle\Entity\QuestionType',
             'csrf_protection' => false
         ));
     }
 
     public function getName()
     {
-        return 'complet';
+        return 'questiontype';
     }
 }

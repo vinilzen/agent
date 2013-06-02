@@ -68,6 +68,7 @@ class MissionAccomplishedController extends Controller
      */
     public function createAction(Request $request)
     {
+        $response = new Response();
         $entity  = new MissionAccomplished();
         $form = $this->createForm(new MissionAccomplishedType(), $entity);
         $form->bind($request);
@@ -77,13 +78,26 @@ class MissionAccomplishedController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('complet_show', array('id' => $entity->getId())));
+            $json_string = json_encode($entity->getId());
+            $response->setStatusCode(201); // created
+        } else {
+            $errors = $form->getErrors();
+            $json_string = json_encode(serialize($errors));
+            $response->setStatusCode(400);
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        $response->setContent($json_string);
+        return $response;
     }
 
     /**
@@ -117,9 +131,37 @@ class MissionAccomplishedController extends Controller
 
         $entity = $em->getRepository('AcmeSpyBundle:MissionAccomplished')->find($id);
 
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json; charset=utf-8');
+        $response->setCache(array(
+            'etag'          => 'abcdef',
+            'last_modified' => new \DateTime(),
+            'max_age'       => 0,
+            's_maxage'      => 0,
+            'private'       => false,
+            'public'        => true,
+        ));
+        
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find MissionAccomplished entity.');
+            $json_string = json_encode('Задание не найдено');
+            $response->setStatusCode(404);
+        } else {
+            $entity_array = array(
+                'id'            =>  $entity->getId(),
+                'latitude'      =>  $entity->getLatitude(),
+                'longitude'     =>  $entity->getLongitude(),
+                'info'          =>  $entity->getInfo(),
+                'status'        =>  $entity->getStatus(),
+                'files'         =>  $entity->getFiles()
+            );
+
+            $json_string = json_encode($entity_array);
         }
+
+        $json_string = MissionController::utf_cyr($json_string);
+
+        $response->setContent($json_string);
+        return $response;
 
         $deleteForm = $this->createDeleteForm($id);
 
