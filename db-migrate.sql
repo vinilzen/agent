@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Май 16 2013 г., 15:58
--- Версия сервера: 5.5.29
+-- Время создания: Июн 07 2013 г., 17:27
+-- Версия сервера: 5.5.31
 -- Версия PHP: 5.3.10-1ubuntu3.6
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -52,15 +52,16 @@ CREATE TABLE IF NOT EXISTS `fos_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_957A647992FC23A8` (`username_canonical`),
   UNIQUE KEY `UNIQ_957A6479A0D96FBF` (`email_canonical`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `fos_user`
 --
 
 INSERT INTO `fos_user` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `age`, `sex`, `education`, `income`, `city`) VALUES
-(1, 'admin', 'admin', 'marchukilya@gmail.com', 'marchukilya@gmail.com', 1, '6ymk8ljquskkwc8k8ssc04ckgwwgsw', '+wnODwlCO0f4EQJYGlbQJDfI/E0iTQ6RmhjUjA6Bt+3MZIMelF3gZmGEDmzJMpzmrV2o6Zkvhk7sGPbAZNMNbg==', '2013-05-16 10:13:12', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'ilya', 'ilya', 'ilya@gmail.com', 'ilya@gmail.com', 1, '1udpzyc4too0gsg8cgko0044sc4ggcw', 'N4WwiISp4FL9JyPWL0IXVjiHdw8rTocO3L28vjCWFSdghxh/+MehV/PSsObcAIpg7MqScTNemCMjIoIJruVOhQ==', NULL, 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, 'admin', 'admin', 'marchukilya@gmail.com', 'marchukilya@gmail.com', 1, '6ymk8ljquskkwc8k8ssc04ckgwwgsw', '+wnODwlCO0f4EQJYGlbQJDfI/E0iTQ6RmhjUjA6Bt+3MZIMelF3gZmGEDmzJMpzmrV2o6Zkvhk7sGPbAZNMNbg==', '2013-06-01 13:34:45', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'ilya', 'ilya', 'ilya@gmail.com', 'ilya@gmail.com', 1, '1udpzyc4too0gsg8cgko0044sc4ggcw', 'N4WwiISp4FL9JyPWL0IXVjiHdw8rTocO3L28vjCWFSdghxh/+MehV/PSsObcAIpg7MqScTNemCMjIoIJruVOhQ==', NULL, 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'test', 'test', 'test@minskonsight.com', 'test@minskonsight.com', 1, 'epchawvu0co44so8gck0occg44g48c0', 'FbS6Kp33FFMEXna6q5iyUt2DsAgGiaau9jTLHd+ASJTM5QDyNlOkBFaforQDte+JbDvUMbr9AKcyTUqRKibK0w==', '2013-05-30 15:28:07', 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -74,17 +75,18 @@ CREATE TABLE IF NOT EXISTS `Franchise` (
   `industry` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `logo` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Дамп данных таблицы `Franchise`
 --
 
 INSERT INTO `Franchise` (`id`, `brand`, `industry`, `logo`) VALUES
-(1, 'CoffeeHeaven', 'horeca', ''),
+(1, 'CoffeeHeaven', 'horeca', '12345'),
 (2, 'Starbucks Coffee Company', 'horeca', ''),
 (3, 'йуцк1', 'фыва', 'ch.gif'),
-(5, 'вася', 'петя', '');
+(5, 'вася', 'петя', ''),
+(7, 'McDuck', 'horeca', 'mc.jpg');
 
 -- --------------------------------------------------------
 
@@ -105,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `Mission` (
   PRIMARY KEY (`id`),
   KEY `IDX_5FDACBA0AB3A88C2` (`missionType_id`),
   KEY `IDX_5FDACBA0C028CEA2` (`point_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 --
 -- Дамп данных таблицы `Mission`
@@ -117,8 +119,11 @@ INSERT INTO `Mission` (`id`, `runtime`, `need_buy`, `costs`, `icons`, `descripti
 (4, '00:10:00', 1, 100, 'бла бла', 'Оценка обслуживания', 1, 1, NULL),
 (5, '00:15:00', 0, 100, 'ico', 'Чистота стола', 1, 1, NULL),
 (6, '01:00:00', 1, 30, 'ico2', 'Улыбки', 1, 1, NULL),
-(7, '02:00:00', 0, 22, 'ico_test.ico', 'описание', NULL, NULL, NULL),
-(9, '01:30:00', 1, 100, 'ico', 'тест создания с добавлением точки', 3, 2, NULL);
+(9, '01:30:00', 1, 100, 'ico', 'тест создания с добавлением точки', 3, 2, NULL),
+(10, '02:03:00', 0, 5, 'qwertyu', 'asdfgh', 1, 2, NULL),
+(11, '02:22:00', 1, 222, '222', '222', 1, 2, 1),
+(12, '03:03:00', 1, 1212, 'ico', 'descr', 1, 1, 1),
+(14, '01:01:00', 0, 123, '123', '123', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -128,13 +133,21 @@ INSERT INTO `Mission` (`id`, `runtime`, `need_buy`, `costs`, `icons`, `descripti
 
 CREATE TABLE IF NOT EXISTS `MissionAccomplished` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `coordinates` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `info` longtext COLLATE utf8_unicode_ci NOT NULL,
   `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `form` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `files` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `latitude` tinytext COLLATE utf8_unicode_ci NOT NULL,
+  `longitude` tinytext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Дамп данных таблицы `MissionAccomplished`
+--
+
+INSERT INTO `MissionAccomplished` (`id`, `info`, `status`, `files`, `latitude`, `longitude`) VALUES
+(1, '3', '5', '4', '1', '2'),
+(2, '33', '55', '44', '11', '22');
 
 -- --------------------------------------------------------
 
@@ -173,17 +186,20 @@ CREATE TABLE IF NOT EXISTS `Point` (
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_7664DC20523CAB89` (`franchise_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Дамп данных таблицы `Point`
 --
 
 INSERT INTO `Point` (`id`, `franchise_id`, `title`, `description`, `latitude`, `longitude`, `active`) VALUES
-(1, 2, 'Старбакс', 'Описание старбакса , работает с 8 до 18', '55.77', '37.58', NULL),
-(2, 1, 'coffee haven на Арбатской', 'с 8 до 22 каждый день', '37.584915', '37.584915', NULL),
-(3, 1, 'тест точка кофе', 'с 8 до 22', '55.718022', '37.584915', NULL),
-(4, 5, 'Скалолазный центр Big Wall', 'пн-пт 08:00-22:30; сб,вс 10:00-22:30', '55.789126', '37.587051', NULL);
+(1, NULL, '', NULL, '', '', 0),
+(2, 1, 'coffee haven на Арбатской', 'с 8 до 22 каждый день', '37.584915', '37.584915', 0),
+(3, 1, 'тест точка кофе', 'с 8 до 22', '55.718022', '37.584915', 0),
+(4, 5, 'Скалолазный центр Big Wall', 'пн-пт 08:00-22:30; сб,вс 10:00-22:30', '55.789126', '37.587051', 0),
+(5, 1, 'qwe', 'asd', '333', '444', 1),
+(6, NULL, '', NULL, '', '', 1),
+(7, 3, 'qwerty1', 'qazwsx1', '1', '2', 1);
 
 -- --------------------------------------------------------
 
@@ -229,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `QuestionType` (
 
 INSERT INTO `QuestionType` (`id`, `title`) VALUES
 (1, 'Да / нет'),
-(2, 'Числовая оценка (кликом)'),
+(2, 'Числовая оценка (кликом)123'),
 (3, 'Выбор из закрытого списка одного варианта (кликом)'),
 (4, 'Выбор из закрытого списка нескольких вариантов (кликом, с лимитом)'),
 (5, 'Открытый вопрос (комментарии в текстовой форме)'),
