@@ -128,7 +128,7 @@ class MissionController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-            $json_string = json_encode($entity->getId());
+            $json_string = json_encode(array('id'=>$entity->getId()));
 
         } else {
 

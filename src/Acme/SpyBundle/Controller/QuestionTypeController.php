@@ -75,7 +75,7 @@ class QuestionTypeController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $json_string = json_encode($entity->getId());
+            $json_string = json_encode(array('id'=>$entity->getId()));
             $response->setStatusCode(201); // created
         } else {
             $errors = $form->getErrors();

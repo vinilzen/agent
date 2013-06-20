@@ -138,14 +138,27 @@ class PointController extends Controller
         } else {
 
             if ($form->isValid()) {
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
                 $em->flush();
-
-                $json_string = json_encode($entity->getId());
+                $json_string = json_encode(array('id' => $entity->getId()));
                 $response->setStatusCode(201); // created
+
             } else {
-                $errors = $form->getErrors();
+
+                var_dump($form->getErrors()); die;
+
+                $errors = array();
+                foreach ($form->getErrors() as $key => $error) {
+                    $template = $error->getMessageTemplate();
+                    $parameters = $error->getMessageParameters();
+                    foreach($parameters as $var => $value){
+                        $template = str_replace($var, $value, $template);
+                    }
+                    $errors[$key] = $template;
+                }
+
                 $json_string = json_encode(serialize($errors));
                 $response->setStatusCode(400);
             }
