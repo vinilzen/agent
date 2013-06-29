@@ -153,13 +153,29 @@ class PointController extends Controller
 
                 } else {
 
-                    $validator = $this->get('validator');
-                    $errors = $validator->validate($entity);
-                    
-                    $array = array();
                     $array['errors'] = array();
-                    foreach ($errors as $error) {
-                        $array['errors'][$error->getPropertyPath()] = $error->getMessage().' ('.$error->getInvalidValue().')';
+                    $errors = $this->get('validator')->validate($entity);
+
+                    if(count($errors) == 0){
+                        $errors = $editForm->getErrors();
+
+                        foreach ($errors as $key => $error) {
+                            $template = $error->getMessageTemplate();
+                            $parameters = $error->getMessageParameters();
+
+                            foreach($parameters as $var => $value){
+                                $template = str_replace($var, $value, $template);
+                            }
+
+                            $array['errors'][$key] = $template;
+                        }
+
+                    } else {
+
+                        foreach ($errors as $error) {
+                            $array['errors'][$error->getPropertyPath()] = $error->getMessage().' ('.$error->getInvalidValue().')';
+                        }
+
                     }
 
                     $json_string = MissionController::utf_cyr(json_encode($array));
@@ -231,75 +247,99 @@ class PointController extends Controller
      * Edits an existing Point entity.
      *
      * @Route("/point/{id}", name="point_create")
+     * @Route("/point/", defaults={"id"=0})
      * @Method("PUT")
      */
     public function updateAction(Request $request, $id)
     {
         $response = new Response();
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('AcmeSpyBundle:Point')->find($id);
-                    
-        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            
-            $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
-            $response->setStatusCode(403);
-
+        
+        if ($id==0){
+            $json_string =  MissionController::utf_cyr(json_encode("Неправильный путь"));
+            $response->setStatusCode(400);
         } else {
-
-            if (!$entity) {
-                $json_string = MissionController::utf_cyr(json_encode('Точка не найдена'));
-
-                $response->setStatusCode(404);
-                $response->setContent($json_string);
+            $param = $request->get('point');
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AcmeSpyBundle:Point')->find($id);
+                        
+            if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
                 
+                $json_string = MissionController::utf_cyr(json_encode('У вас нет доступа'));
+                $response->setStatusCode(403);
+
             } else {
 
-                $editForm = $this->createForm(new PointType(), $entity);
-                $editForm->bind($request);
+                if (!$entity) {
+                    $json_string = MissionController::utf_cyr(json_encode('Точка не найдена'));
 
-                if ($editForm->isValid()) {
-                    $param = $request->get('point');
-
-                    var_dump($param); die;
+                    $response->setStatusCode(404);
+                    $response->setContent($json_string);
+                    
+                } else {
 
                     if (array_key_exists('franchise', $param)){
 
-
                         $franchise_id = $param["franchise"];
-                        $franchise = $em->getRepository('AcmeSpyBundle:Franchise')->find($franchise_id);
+
+                        if ($franchise_id != '')
+                            $franchise = $em->getRepository('AcmeSpyBundle:Franchise')->find($franchise_id);
+                        else
+                            $franchise = false;
 
                         if (!$franchise) {
-                            $json_string =  MissionController::utf_cyr(json_encode("Сеть не найдена (".$franchise_id.")"));
+                            $json_string = MissionController::utf_cyr(json_encode("Сеть не найдена (".$franchise_id.")"));
                             $response->setStatusCode(404);
-
                         } else {
-                            $em->persist($entity);
-                            $em->flush();
-                            $json_string = json_encode($entity->getId());
-                        }
-                    } else {
-                        var_dump($param); die;
+                            $entity->setFranchise($franchise);
 
+                            $editForm = $this->createForm(new PointType(), $entity);
+                            $data = $request->request->all();
+                            unset($data['point']['franchise']);
+                            $editForm->bind($data['point']);
+
+                            if ($editForm->isValid()) {
+
+                                $em->persist($entity);
+                                $em->flush();
+                                $json_string = json_encode($entity->getId());
+
+                            } else {
+                                
+                                $array['errors'] = array();
+                                $errors = $this->get('validator')->validate($entity);
+
+                                if(count($errors) == 0){
+                                    $errors = $editForm->getErrors();
+
+                                    foreach ($errors as $key => $error) {
+                                        $template = $error->getMessageTemplate();
+                                        $parameters = $error->getMessageParameters();
+
+                                        foreach($parameters as $var => $value){
+                                            $template = str_replace($var, $value, $template);
+                                        }
+
+                                        $array['errors'][$key] = $template;
+                                    }
+
+                                } else {
+
+                                    foreach ($errors as $error) {
+                                        $array['errors'][$error->getPropertyPath()] = $error->getMessage().' ('.$error->getInvalidValue().')';
+                                    }
+
+                                }
+
+                                $json_string = MissionController::utf_cyr(json_encode($array));
+                                $response->setStatusCode(400);
+                            }
+                        }
+
+                    } else {
                         $json_string =  MissionController::utf_cyr(json_encode("Неправильно указана сеть"));
                         $response->setStatusCode(404);
-                    }
-
-                } else {
-                    $validator = $this->get('validator');
-                    $errors = $validator->validate($entity);
-                    
-                    var_dump($errors); die;
-
-                    $array = array();
-                    $array['errors'] = array();
-                    foreach ($errors as $error) {
-                        $array['errors'][$error->getPropertyPath()] = $error->getMessage().' ('.$error->getInvalidValue().')';
-                    }
-
-                    $json_string = MissionController::utf_cyr(json_encode(serialize($errors)));
-                    $response->setStatusCode(400);
+                    }              
                 }
-                
             }
         }
 

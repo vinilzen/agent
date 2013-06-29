@@ -5,6 +5,7 @@ namespace Acme\SpyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Acme\SpyBundle\Form\FranchiseType;
 
 class PointType extends AbstractType
 {
@@ -15,8 +16,7 @@ class PointType extends AbstractType
             ->add('description')
             ->add('longitude')
             ->add('latitude')
-            ->add('active') 
-            ->add('franchise')
+            ->add('active')
         ;
     }
 
