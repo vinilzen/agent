@@ -29,7 +29,6 @@ $(function () {
     });
 
 	$('.send').click(function(){
-		
 		var id = $(this).attr('data-section'),
 			data = {};
 
@@ -101,7 +100,7 @@ var ControlGroupView = Backbone.View.extend({
 					'<input type="text" value="<%= value %>" name="<%= url %>[<%= param_name %>]" '+
 										'class="param" '+
 										'<% print((required)?"required":""); %> '+
-										'<% print((disabled)?"disabled":""); %> />'+ 
+										'<% print((disabled)?"disabled":""); %> />'+
 					'<span class="help-inline"><%= url %>[<%= param_name %>]</span>'+
 				'</div>'),
 
@@ -161,7 +160,7 @@ var ControlGroupView = Backbone.View.extend({
         $('#status, #response').html('');
 
         if (this.model.get('name') != 'delete') {
-	        $("#"+id+" .param").each(function() {
+			$("#"+id+" .param").each(function() {
                 if ($(this).hasClass('time')){
 
                     if ($(this).hasClass('hour')){
@@ -178,8 +177,8 @@ var ControlGroupView = Backbone.View.extend({
                     }
 
                 }
-	        });
-	    }
+			});
+		}
 
         $.ajax({
 
@@ -251,9 +250,7 @@ var TabPane = Backbone.View.extend({
 		var THIS = this;
 
 		this.$el.html('<form class="form-horizontal">'+'</form>'); //this.model.get('name')+' - '+this.options.entity_name
-		
 		this.$el.attr('id',this.model.get('name')+'_'+this.options.entity_name);
-		
 		if(this.model.get('active')){
 			this.$el.addClass('active');
 		}

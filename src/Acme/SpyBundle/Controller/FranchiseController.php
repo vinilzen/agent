@@ -14,15 +14,14 @@ use Acme\SpyBundle\Controller\MissionController;
 
 /**
  * Franchise controller.
- *
- * @Route("/franchise")
  */
 class FranchiseController extends Controller
 {
     /**
      * Lists all Franchise entities.
      *
-     * @Route("/", name="franchise")
+     * @Route("/franchise/", name="franchise")
+     * @Route("/franchise")
      * @Method("GET")
      * @Template()
      */
@@ -69,7 +68,7 @@ class FranchiseController extends Controller
     /**
      * Creates a new Franchise entity.
      *
-     * @Route("/", name="franchise_create")
+     * @Route("/franchise/", name="franchise_create")
      * @Method("POST")
      * @Template("AcmeSpyBundle:Franchise:new.html.twig")
      */
@@ -119,7 +118,7 @@ class FranchiseController extends Controller
     /**
      * Finds and displays a Franchise entity.
      *
-     * @Route("/{id}", name="franchise_show")
+     * @Route("/franchise/{id}", name="franchise_show")
      * @Method("GET")
      * @Template()
      */
@@ -162,7 +161,7 @@ class FranchiseController extends Controller
     /**
      * Displays a form to edit an existing Franchise entity.
      *
-     * @Route("/{id}/edit", name="franchise_edit")
+     * @Route("/franchise/{id}/edit", name="franchise_edit")
      * @Method("GET")
      * @Template()
      */
@@ -213,7 +212,7 @@ class FranchiseController extends Controller
     /**
      * Edits an existing Franchise entity.
      *
-     * @Route("/{id}", name="franchise_update")
+     * @Route("/franchise/{id}", name="franchise_update")
      * @Method("PUT")
      * @Template("AcmeSpyBundle:Franchise:edit.html.twig")
      */
@@ -272,7 +271,7 @@ class FranchiseController extends Controller
     /**
      * Deletes a Franchise entity.
      *
-     * @Route("/{id}", name="franchise_delete")
+     * @Route("/franchise/{id}", name="franchise_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)

@@ -4,6 +4,7 @@ namespace Acme\SpyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Point
@@ -26,6 +27,7 @@ class Point
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -47,6 +49,8 @@ class Point
      * @var decimal
      *
      * @ORM\Column(name="latitude", type="text", length=9)
+     * @Assert\NotBlank()
+     * @Assert\Length(min = "2", max = "15")
      */
     private $latitude;
 
@@ -54,6 +58,8 @@ class Point
      * @var decimal
      *
      * @ORM\Column(name="longitude", type="text", length=9)
+     * @Assert\NotBlank()
+     * @Assert\Length(min = "2", max = "15")
      */
     private $longitude;
 
