@@ -246,7 +246,7 @@ class PointController extends Controller
     /**
      * Edits an existing Point entity.
      *
-     * @Route("/point/{id}", name="point_create")
+     * @Route("/point/{id}", name="point_update")
      * @Route("/point/", defaults={"id"=0})
      * @Method("PUT")
      */
