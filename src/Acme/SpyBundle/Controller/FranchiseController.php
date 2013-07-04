@@ -25,6 +25,7 @@ class FranchiseController extends Controller
      * @Method("GET")
      * @Template()
      */
+    /*
     public function indexAction()
     {
         $response = new Response();
@@ -63,7 +64,7 @@ class FranchiseController extends Controller
         ));
 
         return $response;
-    }
+    }*/
 
     /**
      * Creates a new Franchise entity.
@@ -72,6 +73,7 @@ class FranchiseController extends Controller
      * @Method("POST")
      * @Template("AcmeSpyBundle:Franchise:new.html.twig")
      */
+    /*
     public function createAction(Request $request)
     {
         $response = new Response();
@@ -113,7 +115,7 @@ class FranchiseController extends Controller
         ));
         $response->setContent($json_string);
         return $response;
-    }
+    }*/
 
     /**
      * Finds and displays a Franchise entity.
@@ -122,6 +124,7 @@ class FranchiseController extends Controller
      * @Method("GET")
      * @Template()
      */
+    /*
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -156,7 +159,7 @@ class FranchiseController extends Controller
 
         $response->setContent($json_string);
         return $response;
-    }
+    }*/
 
     /**
      * Displays a form to edit an existing Franchise entity.
@@ -165,6 +168,7 @@ class FranchiseController extends Controller
      * @Method("GET")
      * @Template()
      */
+    /*
     public function editAction($id)
     {
         $response = new Response();
@@ -207,7 +211,7 @@ class FranchiseController extends Controller
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
-    }
+    }*/
 
     /**
      * Edits an existing Franchise entity.
@@ -216,6 +220,7 @@ class FranchiseController extends Controller
      * @Method("PUT")
      * @Template("AcmeSpyBundle:Franchise:edit.html.twig")
      */
+    /*
     public function updateAction(Request $request, $id)
     {
         $response = new Response();
@@ -266,7 +271,7 @@ class FranchiseController extends Controller
         ));
         $response->setContent($json_string);
         return $response;
-    }
+    }*/
 
     /**
      * Deletes a Franchise entity.
@@ -274,6 +279,7 @@ class FranchiseController extends Controller
      * @Route("/franchise/{id}", name="franchise_delete")
      * @Method("DELETE")
      */
+    /*
     public function deleteAction(Request $request, $id)
     {
         $response = new Response();
@@ -324,7 +330,7 @@ class FranchiseController extends Controller
         $response->setContent($json_string);
 
         return $response;
-    }
+    }*/
 
     /**
      * Creates a form to delete a Franchise entity by id.

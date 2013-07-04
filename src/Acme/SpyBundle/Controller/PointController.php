@@ -60,15 +60,20 @@ class PointController extends Controller
 
         return $response;
     }
+
     /**
      * Lists The Nearest Points Point entities.
      *
-     * @Route("/point/{latitude}x{longitude}/{distance}", name="nearest_point")
+     * @Route("/points", name="nearest_point")
      * @Method("GET")
      * @Template()
      */
-    public function nearest_pointAction($latitude, $longitude, $distance)
+    public function nearest_pointAction(Request $request)
     {
+    // example  /app_dev.php/points?distance=1500&location[latitude]=55.777033&location[longitude]=37.583138
+
+        $location = $request->query->get('location');
+        $distance = $request->query->get('distance');
         $em = $this->getDoctrine()->getManager();
 
         /*
@@ -76,17 +81,25 @@ class PointController extends Controller
          */
         $results = $em
                     ->getRepository('AcmeSpyBundle:Point')
-                    ->findTheNearestPoints($latitude, $longitude, $distance);
+                    ->findTheNearestPoints($location['latitude'], $location['longitude'], $distance);
 
         
         if (count($results)){
             foreach ($results as $point) {
+                $tasks_id = array();
+                $tasks = $em->getRepository('AcmeSpyBundle:Mission')->findByPoint($point['id']);
+                if (count($tasks)){
+                    foreach ($tasks as $task) {
+                        array_push($tasks_id, $task->getId());
+                    }
+                }
                 $entities_array[] = array(
                     'id'            =>  $point['id'],
                     'title'         =>  $point['title'],
                     'distance'      =>  round($point['distance']),
                     'latitude'      =>  $point['latitude'],
-                    'longitude'     =>  $point['longitude']
+                    'longitude'     =>  $point['longitude'],
+                    'tasks'         =>  $tasks_id
                 );
             }
 
@@ -121,6 +134,7 @@ class PointController extends Controller
      * @Method("POST")
      * @Template("AcmeSpyBundle:Point:new.html.twig")
      */
+    /*
     public function createAction(Request $request, $franchise_id)
     {
         $response = new Response();
@@ -195,7 +209,7 @@ class PointController extends Controller
         ));
         $response->setContent($json_string);
         return $response;
-    }
+    }*/
 
     /**
      * Finds and displays a Point entity.
@@ -250,6 +264,7 @@ class PointController extends Controller
      * @Route("/point/", defaults={"id"=0})
      * @Method("PUT")
      */
+    /*
     public function updateAction(Request $request, $id)
     {
         $response = new Response();
@@ -354,7 +369,7 @@ class PointController extends Controller
         ));
         $response->setContent($json_string);
         return $response;
-    }
+    }*/
 
     /**
      * Deletes a Point entity.
@@ -362,6 +377,7 @@ class PointController extends Controller
      * @Route("/point/{id}", name="point_delete")
      * @Method("DELETE")
      */
+    /*
     public function deleteAction(Request $request, $id)
     {
         $response = new Response();
@@ -410,7 +426,7 @@ class PointController extends Controller
         ));
         $response->setContent($json_string);
         return $response;
-    }
+    }*/
 
     /**
      * Creates a form to delete a Point entity by id.
@@ -419,11 +435,12 @@ class PointController extends Controller
      *
      * @return Symfony\Component\Form\Form The form
      */
+    /*
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id),array('csrf_protection' => false))
             ->add('id', 'hidden')
             ->getForm()
         ;
-    }
+    }*/
 }
